@@ -221,7 +221,6 @@ def api_add_subscriber():
             api_log = APIUsageTrack(client_id=client.id,usage_date=datetime.now().date(),usage_quantity=1)
             db.session.add(api_log)
     except:
-        pass
         return jsonify({"message":"Request was not processed.","status":400}),400
     requests = client.requests
     allowed_requests = client.allowed_requests
@@ -371,7 +370,6 @@ def api_add_plan():
             api_log = APIUsageTrack(client_id=client.id,usage_date=datetime.now().date(),usage_quantity=1)
             db.session.add(api_log)
     except:
-        pass
         return jsonify({"message":"Request was not processed.","status":400}),400
     requests = client.requests
     allowed_requests = client.allowed_requests
