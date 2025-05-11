@@ -1,0 +1,15 @@
+Flask
+Flask-Mail
+Flask-Login
+Flask-WTF
+Flask-Limiter
+Flask-APScheduler
+Flask-SQLAlchemy
+WTForms
+Werkzeug
+gunicorn
+requests
+matplotlib
+numpy
+scipy
+Pillow
