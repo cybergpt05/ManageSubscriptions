@@ -8,8 +8,6 @@ main_bp = Blueprint('main', __name__)
 @main_bp.route("/",methods=['GET'])
 @main_bp.route("/home",methods=['GET'])
 def index():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboards.my_account'))
     return render_template('home.html',title='Subly - Manage subscriptions easily')
 
 @main_bp.route('/pricing', methods=["GET","POST"])
