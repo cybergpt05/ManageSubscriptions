@@ -5,12 +5,10 @@ info:
     The Subly.io Subscription Management API enables client applications to manage their subscribers and subscription plans programmatically. Authenticated clients can retrieve, add, update, and delete subscriber records, while adhering to usage limits and tracking. This documentation covers all available endpoints, parameters, and data models necessary to work with the Subly.io subscriber API.
   version: 1.0.0
   contact:
-    email: support@subly.io
+    email: itsubly@gmail.com
 
 servers:
-  - url: http://127.0.0.1:5000
-    description: Development server
-  - url: https://api.subly.io
+  - url: https://subly-9gsq.onrender.com/api
     description: Production server (HTTPS)
 
 components:
