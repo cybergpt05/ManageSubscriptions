@@ -1,0 +1,296 @@
+body {  
+    background-color: #0A0F1C !important; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh;
+    font-family: 'Instrument Sans' !important; 
+    padding: 0 !important;
+    margin: 0;
+} 
+html, body { 
+    height: 100%; 
+    margin: 0; 
+} 
+.card-container { 
+    perspective: 1000px; 
+    width: 45rem; 
+    height: 30rem; 
+    margin: 0 auto auto auto !important; 
+} 
+  
+.card-flip { 
+  position: relative; 
+  width: 100%; 
+  height: 100%; 
+  transition: transform 0.8s; 
+  transform-style: preserve-3d; 
+} 
+
+.card-flip.flipped { 
+  transform: rotateY(180deg); 
+} 
+
+.go-back{
+  padding: 1rem 0 0 2rem !important;
+}
+
+.bi-arrow-left{
+  cursor:  pointer !important;
+}
+
+.card-front, .card-back { 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important; 
+  border-radius: 15px; 
+  overflow: hidden; 
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: opacity 0.1s ease;
+} 
+
+.card-back { 
+  transform: rotateY(180deg);
+}
+.fa-eye,.fa-eye-slash{
+  color: #468C98 !important;
+}
+.card-header { 
+  border-bottom: none; 
+  background-color: transparent; 
+  padding: 2rem 1.5rem 0.5rem; 
+  display: flex; 
+  justify-content: center; 
+} 
+
+.auth-tabs { 
+  display: flex; 
+  justify-content: center !important; 
+  gap: 10px !important; 
+  border-bottom: none !important; 
+  padding-bottom: 15px; 
+  margin: 0 auto; 
+  width: fit-content; 
+  background-color: rgba(0, 0, 0, 0.15); 
+  border-radius: 50px; 
+  padding: 6px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03); 
+} 
+
+.auth-tab { 
+  border: none; 
+  background: transparent; 
+  color: #6c757d; 
+  font-weight: 600; 
+  padding: 10px 20px; 
+  position: relative; 
+  cursor: pointer; 
+  transition: all 0.3s ease; 
+  border-radius: 50px; 
+  min-width: 130px; 
+  text-align: center; 
+} 
+
+.auth-tab.active { 
+  color: #468C98; 
+  background-color: #FCFAF9; 
+  box-shadow: 0 2px 8px rgba(51, 119, 255, 0.1); 
+}
+#login-email,#login-password,#register-name,#register-email,#register-password,#register-password-confirm{
+  height: 3rem !important;
+}
+#login-email:focus,#login-password:focus,#register-name:focus,#register-email:focus,#register-password:focus,#register-password-confirm:focus{
+  box-shadow: 0 0 1px #468C98,
+                  0 0 2px #468C98,
+                  0 0 6px #468C98,
+                  0 0 8px #468C98 !important;
+}
+.form-check input[type="checkbox"]{
+  box-shadow: none !important;
+}
+.form-check input[type="checkbox"]:checked {
+  background-color: #468C98 !important;
+  border-color: #468C98 !important;
+  box-shadow: none !important;
+}
+.form-control { 
+  border-radius: 10px; 
+  padding: 12px; 
+  margin-bottom: 15px; 
+  border: 1px solid #468C98; 
+  background-color: rgba(0, 0, 0, 0.15) !important; 
+  transition: all 0.3s; 
+  color: #FCFAF9 !important;
+} 
+
+.form-control:focus { 
+  border-color: #468C98; 
+  box-shadow: 0 0 0 0.2rem rgba(51, 119, 255, 0.15); 
+} 
+
+.password-field { 
+  position: relative; 
+} 
+
+.password-toggle { 
+  position: absolute; 
+  top: 50%; 
+  right: 10px; 
+  transform: translateY(-50%); 
+  background: transparent; 
+  border: none; 
+  color: #adb5bd; 
+  cursor: pointer; 
+  padding: 5px; 
+  font-size: 14px; 
+} 
+
+.password-toggle:hover { 
+  color: #6c757d; 
+} 
+
+.card-body { 
+  padding: 1.5rem; 
+} 
+
+.form-label { 
+  font-weight: 500; 
+  margin-bottom: 8px; 
+  color: #e0e0e0; 
+} 
+
+.form-check-label{ 
+  font-size: 14px; 
+  color: #e0e0e0;
+} 
+
+.forget-password { 
+  color: #468C98; 
+  text-decoration: none;
+  transition: ease 0.3s;
+}
+
+.forget-password:hover { 
+  color: #FCFAF9;
+  transition: ease 0.3s;
+}
+
+.card {
+  text-align: left;
+  direction: ltr;
+}
+
+.card-container {
+  direction: ltr;
+}
+
+.card-container .card-front,
+.card-container .card-back {
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+  transform-style: preserve-3d;
+}
+
+.form-control {
+  direction: ltr;
+  text-align: left;
+}
+
+.card-flip .card-front,
+.card-flip .card-back {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0s;
+}
+
+.card-flip.flipped .card-front {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s 0.4s;
+}
+
+.card-flip:not(.flipped) .card-back {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s 0.4s;
+}
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+  
+.form-group {
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+.form-button{
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  margin-top: 1rem !important;
+  border: 1px solid #ADD9F4 !important;
+  width: 100% !important;
+  color: #FCFAF9;
+  height: 3rem !important;
+  font-weight: 600 !important;
+}
+.form-button:hover{
+  background-color: #ADD9F4 !important;
+  box-shadow: 0 0 2px #ADD9F4,
+                  0 0 5px #ADD9F4,
+                  0 0 10px #ADD9F4,
+                  0 0 15px #ADD9F4 !important;
+  color: #0A0F1C !important;
+  font-weight: 600 !important;
+}
+
+.password-toggle {
+  z-index: 1;
+}
+
+
+
+@media (min-width: 768px) {
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    width: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .form-row {
+    display: block;
+  }
+  
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+@media (max-width:430px) {
+  .form-group {
+    width: 100%;
+  }
+  .card-container{
+    max-width: 90% !important;
+  }
+  .auth-tab,.form-check-label,.forget-password{
+    font-size: 14px !important;
+  }
+  #login-email,#login-password,#register-name,#register-email,#register-password,#register-password-confirm{
+    height: 2.7rem !important;
+  }
+  .card-back {
+    min-height: 590px !important;
+    height: fit-content !important;
+  }
+  .text-danger {
+    font-size: 16px;
+    display: block;
+    word-wrap: break-word;
+  }
+}

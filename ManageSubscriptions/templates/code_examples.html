@@ -1,0 +1,265 @@
+{%extends "layout3.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='code_examples.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics2.css')}}">
+<div class="container px-4">
+    <h2 class="white fw-bold mt-5 mb-4">Python example using GET</h2>
+    <div class="code-container" data-aos="fade-in" data-aos-duration="1200">
+        <div class="code-header">
+            <span class="white">Python</span>
+            <button type="button" class="copybutton">
+                <i class="fa-regular fa-clone copyButton"></i>
+            </button>
+        </div>
+        <div class="code-body">
+            <div class="line-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+            </div>
+            <div class="code-content"><span class="token selector">import</span> <span class="token property">requests</span>
+<span class="token property">url</span> <span class="white">=</span> <span class="token attr-value">'http://127.0.0.1:5000/api/subscribers'</span>
+<span class="token property">api_key</span> <span class="white">=</span> <span class="token attr-value">"&lt;YOUR_API_KEY_HERE&gt;"</span>
+<span class="token property">headers</span> <span class="white">=</span> <span class="white">{</span>
+    <span class="token attr-value">"Content-Type"</span><span class="white">:</span><span class="token attr-value">"application/json"</span><span class="white">,</span>
+    <span class="token attr-value">"X-API-KEY"</span><span class="white">:</span><span class="token property">api_key</span>
+<span class="white">}</span>
+<span class="token property">response</span> <span class="white">=</span> <span class="token property">requests</span><span class="white">.</span><span class="token tag">get</span><span class="white">(</span><span class="token property">url</span><span class="white">,</span><span class="token property">headers</span><span class="white">=</span><span class="token property">headers</span><span class="white">)</span>
+<span class="token tag">print</span><span class="white">(</span><span class="token property">response</span><span class="white">.</span><span class="token tag">json</span><span class="white">()</span><span class="white">)</span>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="white fw-bold mt-5 mb-4">Python example using POST</h2>
+    <div class="code-container" data-aos="fade-in" data-aos-duration="1200">
+        <div class="code-header">
+            <span class="white">Python</span>
+            <button type="button" class="copybutton">
+                <i class="fa-regular fa-clone copyButton"></i>
+            </button>
+        </div>
+        <div class="code-body">
+            <div class="line-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+                <span>12</span>
+                <span>13</span>
+                <span>14</span>
+                <span>15</span>
+                <span>16</span>
+                <span>17</span>
+                <span>18</span>
+            </div>
+            <div class="code-content"><span class="token selector">import</span> <span class="token property">requests</span>
+<span class="token property">url</span> <span class="white">=</span> <span class="token attr-value">'http://127.0.0.1:5000/api/subscribers'</span>
+<span class="token property">api_key</span> <span class="white">=</span> <span class="token attr-value">"&lt;YOUR_API_KEY_HERE&gt;"</span>
+<span class="token property">headers</span> <span class="white">=</span> <span class="white">{</span>
+    <span class="token attr-value">"Content-Type"</span><span class="white">:</span><span class="token attr-value">"application/json"</span><span class="white">,</span>
+    <span class="token attr-value">"X-API-KEY"</span><span class="white">:</span><span class="token property">api_key</span>
+<span class="white">}</span>
+<span class="token property">data</span> <span class="white">=</span> <span class="white">{</span>
+    <span class="token attr-value">"user_id"</span><span class="white">:</span> <span class="token attr-value">"ID123"</span><span class="white">,</span>
+    <span class="token attr-value">"plan_name"</span><span class="white">:</span> <span class="token attr-value">"Ultimate"</span><span class="white">,</span>
+    <span class="token attr-value">"start_date"</span><span class="white">:</span> <span class="token attr-value">"2025-05-01"</span><span class="white">,</span>
+    <span class="token attr-value">"end_date"</span><span class="white">:</span> <span class="token attr-value">"2025-11-01"</span><span class="white">,</span>
+    <span class="token attr-value">"active"</span><span class="white">:</span> <span class="token selector">True</span><span class="white">,</span>
+    <span class="token attr-value">"meta_data"</span><span class="white">:</span> <span class="token attr-value">"Optional Input"</span>
+<span class="white">}</span>
+<span class="token property">response</span> <span class="white">=</span> <span class="token property">requests</span><span class="white">.</span><span class="token tag">post</span><span class="white">(</span><span class="token property">url</span><span class="white">,</span> <span class="token property">json</span><span class="white">=</span><span class="token property">data</span><span class="white">,</span> <span class="token property">headers</span><span class="white">=</span><span class="token property">headers</span><span class="white">)</span>
+<span class="token tag">print</span><span class="white">(</span><span class="token property">response</span><span class="white">.</span><span class="token tag">json</span><span class="white">()</span><span class="white">)</span>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="white fw-bold mt-5 mb-4">JavaScript example using GET</h2>
+    <div class="code-container" data-aos="fade-in" data-aos-duration="1200">
+        <div class="code-header">
+            <span class="white">JavaScript</span>
+            <button type="button" class="copybutton">
+                <i class="fa-regular fa-clone copyButton"></i>
+            </button>
+        </div>
+        <div class="code-body">
+            <div class="line-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+            </div>
+            <div class="code-content"><span class="token selector">const</span> <span class="token property">url</span> = <span class="token string">"http://127.0.0.1:5000/api/subscribers"</span>;
+<span class="token selector">const</span> <span class="token property">headers</span> = {
+    <span class="token attr-value">"Content-Type"</span>: <span class="token string">"application/json"</span>,
+    <span class="token attr-value">"X-API-KEY"</span>: <span class="token string">"&lt;YOUR_API_KEY_HERE&gt;"</span>
+};
+<span class="token function">fetch</span>(<span class="token property">url</span>, { <span class="token property">headers</span> })
+    .<span class="token function">then</span>(res => res.json())
+    .<span class="token function">then</span>(data => console.log(data));
+            </div>
+        </div>
+    </div>
+
+    <h2 class="white fw-bold mt-5 mb-4">JavaScript example using POST</h2>
+    <div class="code-container mb-5" data-aos="fade-in" data-aos-duration="1200">
+        <div class="code-header">
+            <span class="white">JavaScript</span>
+            <button type="button" class="copybutton">
+                <i class="fa-regular fa-clone copyButton"></i>
+            </button>
+        </div>
+        <div class="code-body">
+            <div class="line-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+                <span>11</span>
+                <span>12</span>
+                <span>13</span>
+                <span>14</span>
+                <span>15</span>
+                <span>16</span>
+                <span>17</span>
+                <span>18</span>
+                <span>19</span>
+                <span>20</span>
+
+            </div>
+            <div class="code-content"><span class="token selector">const</span> <span class="token property">url</span> = <span class="token string">"http://127.0.0.1:5000/api/subscribers"</span>;
+<span class="token selector">const</span> <span class="token property">headers</span> = {
+    <span class="token attr-value">"Content-Type"</span>: <span class="token string">"application/json"</span>,
+    <span class="token attr-value">"X-API-KEY"</span>: <span class="token string">"&lt;YOUR_API_KEY_HERE&gt;"</span>
+};
+<span class="token selector">const</span> <span class="token property">data</span> = {
+    <span class="token attr-value">"user_id"</span><span class="white">:</span> <span class="token attr-value">"ID123"</span><span class="white">,</span>
+    <span class="token attr-value">"plan_name"</span><span class="white">:</span> <span class="token attr-value">"Ultimate"</span><span class="white">,</span>
+    <span class="token attr-value">"start_date"</span><span class="white">:</span> <span class="token attr-value">"2025-05-01"</span><span class="white">,</span>
+    <span class="token attr-value">"end_date"</span><span class="white">:</span> <span class="token attr-value">"2025-11-01"</span><span class="white">,</span>
+    <span class="token attr-value">"active"</span><span class="white">:</span> <span class="token selector">true</span><span class="white">,</span>
+    <span class="token attr-value">"meta_data"</span><span class="white">:</span> <span class="token attr-value">"Optional Input"</span>
+};
+<span class="token function">fetch</span>(<span class="token property">url</span>, {
+    method: <span class="token string">"POST"</span>,
+    headers,
+    body: JSON.stringify(<span class="token property">data</span>)
+})
+.<span class="token function">then</span>(res => res.json())
+.<span class="token function">then</span>(data => console.log(data));
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5 footer-row">
+        <div class="col-12 footer-button-container" data-aos="fade-in" data-aos-duration="1200">
+            <a href="/developer/getting-started" class="btn fw-bold mx-auto footer-button">Get Started</a>
+        </div>
+        <div class="col-12 footer-button-container text-center" data-aos="fade-in" data-aos-duration="1200">
+            <a href="/developer/api" class="btn fw-bold mx-auto footer-button">API Docs</a>
+        </div>
+        <div class="col-12 footer-button-container" data-aos="fade-in" data-aos-duration="1200">
+            <a href="/support" class="btn fw-bold mx-auto footer-button">Support</a>
+        </div>
+    </div>
+</div>
+<script>
+    const copyButtons = document.querySelectorAll('.copybutton');
+    
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const codeContainer = this.closest('.code-container');
+            const codeToCopy = codeContainer.querySelector('.code-content').innerText;
+            const copyIcon = this.querySelector('.copyButton');
+            
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                if (copyIcon.classList.contains('fa-clone')) {
+                    copyIcon.classList.remove('fa-clone', 'fa-regular');
+                    copyIcon.classList.add('fa-regular', 'fa-circle-check');
+                    this.disabled = true;
+                    
+                    const successMessage = document.createElement('div');
+                    successMessage.innerHTML = '<i class="bi bi-info-circle"></i> Code was copied.';
+                    successMessage.classList.add('message', 'success-message', 'copied-message');
+                    successMessage.setAttribute('data-aos', 'fade-up');
+                    successMessage.setAttribute('data-aos-duration', '800');
+                    document.body.appendChild(successMessage);
+                    
+                    setTimeout(() => {
+                        const successDiv = document.querySelector('.copied-message');
+                        if (successDiv) {
+                            successDiv.style.opacity = '0';
+                            setTimeout(() => {
+                                successDiv.remove();
+                            }, 1000);
+                        }
+                    }, 3000);
+                    
+                    setTimeout(() => {
+                        copyIcon.classList.remove('fa-regular', 'fa-circle-check');
+                        copyIcon.classList.add('fa-regular','fa-clone');
+                        this.disabled = false;
+                    }, 3000);
+                }
+            }).catch(err => {
+                const errorMessage = document.createElement('div');
+                errorMessage.innerHTML = '<i class="bi bi-info-circle"></i> Failed to copy code.';
+                errorMessage.classList.add('message', 'error-message', 'failed-message');
+                errorMessage.setAttribute('data-aos', 'fade-up');
+                errorMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(errorMessage);
+                
+                setTimeout(() => {
+                    const errorDiv = document.querySelector('.failed-message');
+                    if (errorDiv) {
+                        errorDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            errorDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+            });
+        });
+    });
+    
+    setTimeout(() => {
+        const msg = document.getElementById('message');
+        if (msg) {
+            msg.style.opacity = '0'
+            setTimeout(() => {
+                msg.remove();
+            }, 1000);
+        }
+    }, 3000);
+    
+    setTimeout(() => {
+        const flash_msg = document.getElementById('flahsed-message');
+        if (flash_msg) {
+            flash_msg.style.opacity = '0';
+            setTimeout(() => {
+                flash_msg.remove();
+            }, 1000);
+        }
+    }, 5000);
+</script>
+{%endblock%}

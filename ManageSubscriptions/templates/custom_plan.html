@@ -1,0 +1,97 @@
+{%extends "layout4.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='support.css')}}">
+<div class="container px-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {%endif%}
+    <h1 class="fw-bold white mt-5">Customize your plan</h1>
+    <h6 class="grey mt-3">Break the limits, and choose the style you want !</h6>
+    <form action="" method="POST">
+        {{form.hidden_tag()}}
+        <div class="mt-4">
+            {{form.requests.label(class="form-label white fw-bold form-label")}}
+            {{form.requests(class="form-control form-field", placeholder="Minimum is 200000 request", id="requests")}}
+            {% for error in form.requests.errors %}
+                <small class="text-danger">{{error}}</small>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            {{form.subscribers.label(class="form-label white fw-bold")}}
+            {{form.subscribers(class="form-control form-field", placeholder="Minimum is 5000 subscriber", id="subscribers")}}
+            {% for error in form.subscribers.errors %}
+                <small class="text-danger">{{error}}</small>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12 justify-content-between d-flex mt-4 mb-5">
+                <h4 class="fw-bold white" id="price">Price: 70$/month</h4>
+                {{ form.submit(class="btn plan-submit-btn fw-bold", id="submit-btn", disabled=true) }}
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    const basePrice = 70;
+    const requestBase = 200000;
+    const subscriberBase = 5000;
+    const requestUnitPrice = 5 / 10000;
+    const subscriberUnitPrice = 3 / 500;
+
+    function calculatePrice() {
+        const requestsInput = document.getElementById("requests").value;
+        const subscribersInput = document.getElementById("subscribers").value;
+
+        const requests = parseInt(requestsInput);
+        const subscribers = parseInt(subscribersInput);
+        const submitBtn = document.getElementById("submit-btn");
+
+        if ((isNaN(requests) || isNaN(subscribers))) {
+            document.getElementById("price").textContent = "Please enter valid numbers only.";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        if (subscribers > 1000000) {
+            document.getElementById("price").textContent = "Subscribers limit is 1M subscriber";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        if (requests > 100000000) {
+            document.getElementById("price").textContent = "Requests limit is 100M request";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        const extraRequests = Math.max(0, requests - requestBase);
+        const extraSubscribers = Math.max(0, subscribers - subscriberBase);
+
+        const extraPrice = (extraRequests * requestUnitPrice) + (extraSubscribers * subscriberUnitPrice);
+        const total = basePrice + extraPrice;
+
+        document.getElementById("price").textContent = `Price: $${total.toFixed(2)}`;
+        submitBtn.disabled = false;
+    }
+
+    document.getElementById("requests").addEventListener("input", calculatePrice);
+    document.getElementById("subscribers").addEventListener("input", calculatePrice);
+</script>
+
+{%endblock%}

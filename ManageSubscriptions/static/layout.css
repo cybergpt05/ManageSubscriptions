@@ -1,0 +1,188 @@
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #0A0F1C;
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+body{
+    background-color: #0A0F1C !important;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Instrument Sans' !important;
+    padding-top: 156px !important;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+main {
+    flex: 1;
+}
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #0A0F1C;
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+.nav{
+    height: 3.5rem !important;
+    width: 55% !important;
+    margin: 2rem auto !important;
+    background-color: #fcfaf9c5;
+    border-radius: 28px !important;
+    padding: 0px 20px !important;
+    padding-right: 0 !important;
+    display: block;
+}
+.brand{
+    color: #468C98;
+    text-decoration: none !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-top: auto !important;
+    transition: ease-in-out 0.15s;
+    margin-bottom: auto !important;
+}
+.brand:hover,.brand:focus{
+    text-shadow: 1px 5px 12px #468C98;
+    transition: ease-in-out 0.15s;
+}
+#container{
+    margin-left: auto !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+.nav-item{
+    margin-right: 20px !important;
+    text-decoration: none;
+    color: #414141;
+    font-weight: 400 !important;
+    font-size: 1.3rem;
+}
+
+.nav-item:hover{
+    text-decoration: underline 2px #464646 !important;
+}
+.primary-btn {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    width: 8rem !important;
+    height: 2.8rem !important;
+    padding: 0 !important;
+    color: #fcfaf9c5 !important;
+
+    background-color: #468C98 !important;
+    margin-right: 5px !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    border-radius: 28px !important;
+    border: 2px solid #468C98 !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    transition: ease .3s !important;
+}
+.primary-btn:hover{
+    background-color: #ffffff00 !important;
+    border: 2px solid #468C98 !important;
+    color: #101419 !important;
+    transition: ease .3s !important;
+}
+footer{
+    background-color: #fcfaf9c5;
+}
+.colored-hook{
+    color: #468C98;
+}
+.footer-link{
+    color: #468C98;
+    font-weight: 600;
+}
+.try-btn{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    width: 12rem !important;
+    height: 2.8rem !important;
+    padding: 0 !important;
+    color: #fcfaf9c5 !important;
+
+    background-color: #468C98 !important;
+    margin-right: 5px !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    border-radius: 28px !important;
+
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    transition: ease-in-out 0.2s;
+}
+.try-btn:hover{
+    background-color: #ffffff00 !important;
+    border: 2px solid #468C98 !important;
+    color: #0A0F1C !important;
+}
+h6,.p,small{
+    color: #0A0F1C !important;
+}
+h6{
+    font-size: 1.5rem !important;
+}
+.mobile-only{
+    display: none !important;
+}
+@media (max-width:768px) {
+    .desktop-only{
+        display:none !important;
+    }
+    .mobile-only{
+        display: inline-block !important;
+    }
+    #hamburger-icon{
+        color: #468C98;
+        margin: 4px;
+        font-size: 24px !important;
+    }
+    .navbar{
+        height: 3.5rem !important;
+        width: 100vw !important;
+        background-color: #fcfaf9c5;
+        padding: 0px 10px !important;
+        display: block;
+    }
+    .dropdown-menu {
+        display: none !important;
+        background-color: #fcfaf9c5 !important;
+        margin-top: 4px !important;
+    }
+    .dropdown-menu.show {
+        display: block !important;
+    }
+    .dropdown-item{
+        color: #468C98 !important;
+    }
+    
+}

@@ -1,0 +1,99 @@
+.container{
+    max-width: 100% !important;
+}
+.white{
+    color: #F4F7FB !important;
+}
+.why-subly{
+    width: 80%;
+    margin: 0 auto !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+}
+.features-card{
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1px solid #F4F7FB !important;
+    padding: 1rem !important;
+    min-width: 260px !important;
+    min-height: 260px !important;
+    animation: float 4s ease-in-out infinite;
+    
+}
+.who-card{
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1px solid #F4F7FB !important;
+    padding: 1rem !important;
+    min-width: 330px !important;
+    min-height: 210px !important;
+    animation: float 4s ease-in-out infinite;
+    
+}
+h2{
+    width: 100% !important;
+}
+.row{
+    padding-left: 5rem !important;
+}
+.cards-row{
+    gap: 1rem !important;
+    padding-left: 6rem !important;
+}
+.who-cards-row{
+    gap: 6rem !important;
+    padding-left: 6rem !important;
+}
+.col-md-4,.col-md-3{
+    max-width: 260px !important;
+    max-height: 260px !important;
+}
+.email-link {
+    color: #F4F7FB;
+    font-size: 1.25rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.email-link:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+@media (max-width:1024px){
+    .container{
+        max-width: 90% !important;
+    }
+    .cards-row{
+        gap: 5rem !important;
+    }
+    .who-cards-row{
+        gap: 10rem !important;
+    }
+}
+@media (max-width:768px){
+    .who-cards-row{
+        gap: 2rem !important;
+    }
+}
+@media (max-width:500px) {
+    .cards-row{
+        padding: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    .who-cards-row{
+        gap: 1rem !important;
+    }
+    .card{
+        margin: 0 auto !important;
+    }
+    .row{
+        padding-left: 0 !important;
+    }
+}

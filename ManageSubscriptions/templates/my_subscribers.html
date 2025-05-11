@@ -1,0 +1,487 @@
+{%extends "layout3.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='my_subscribers.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics2.css')}}">
+<div class="container px-3">
+    <div class="container mx-auto my-auto">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, msg in messages %}
+            <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% if message %}
+        {% if category == 'error' %}
+        <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+            <i class="bi bi-info-circle">  </i> {{ message }}
+        </div>
+        {% elif category == 'info' %}
+        <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+            <i class="bi bi-info-circle">  </i> {{ message }}
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    <h1 class="white fw-bold mt-5 mb-3">Subscribers</h1>
+    <div class="row d-flex justify-content-between">
+        <div class="col-6">
+            <h6 class="grey mb-5">Manage your subscribers</h6>
+        </div>
+        {%if subscribers%}
+        <div class="col-6 d-flex justify-content-end">
+            <a href="/my/subscribers/add" class="btn mb-auto add-subscriber">Add Subscriber</a>
+        </div>
+        {%endif%}
+    </div>
+    {% if subscribers %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search subscribers by any filter...">
+        </div>
+    </div>
+    <table class="responsive-table" id="subscribersTable">
+        <thead>
+            <th class="white fw-bold">
+                ID
+            </th>
+            <th class="white fw-bold">
+                Plan
+            </th>
+            <th class="white fw-bold">
+                Start date
+            </th>
+            <th class="white fw-bold">
+                End date
+            </th>
+            <th class="white fw-bold">
+                Remaining days
+            </th>
+            <th class="white fw-bold">
+                Active status
+            </th>
+            <th class="white fw-bold">
+                Meta data
+            </th>
+            <th class="white fw-bold">
+                Subscriber since
+            </th>
+            <th class="fw-bold">
+                <font class="white">Actions</font>
+            </th>
+        </thead>
+        <tbody>
+            {% for subscriber in subscribers %}
+            <tr>
+                <td class="white" data-label="ID">{{subscriber.user_id}}</td>
+                <td class="white" data-label="Plan">{{plans[subscriber.plan_id]}}</td>
+                <td class="white" data-label="Start date">{{subscriber.start_date}}</td>
+                <td class="white" data-label="End date">{{subscriber.end_date}}</td>
+                <td class="white" data-label="Remaining days">{{subscriber.remaining_days}}</td>
+                <td class="white" data-label="Active status">{%if subscriber.active == True%}Active{%else%}Expired{%endif%}</td>
+                <td class="white" data-label="Meta data">{%if subscriber.meta_data == None%}{%else%}{{subscriber.meta_data}}{%endif%}</td>
+                <td class="white" data-label="Subscriber since">{{subscriber.created_at.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                <td data-label="Actions" class="action-buttons">
+                    {%if subscriber.meta_data == None%}
+                    {%if subscriber.active == True%}
+                    <button class="btn btn-primary edit-btn" data-id="{{subscriber.user_id}}" data-plan="{{plans[subscriber.plan_id]}}" data-start="{{subscriber.start_date}}" data-end="{{subscriber.end_date}}" data-remaining="{{subscriber.remaining_days}}" data-active="Active" data-meta="" data-since="{{subscriber.created_at.strftime('%Y-%m-%d %H:%M:%S')}}">Edit</button>
+                    {%else%}
+                    <button class="btn btn-primary edit-btn" data-id="{{subscriber.user_id}}" data-plan="{{plans[subscriber.plan_id]}}" data-start="{{subscriber.start_date}}" data-end="{{subscriber.end_date}}" data-remaining="{{subscriber.remaining_days}}" data-active="Expired" data-meta="" data-since="{{subscriber.created_at.strftime('%Y-%m-%d %H:%M:%S')}}">Edit</button>
+                    {%endif%}
+                    {%else%}
+                    {%if subscriber.active == True%}
+                    <button class="btn btn-primary edit-btn" data-id="{{subscriber.user_id}}" data-plan="{{plans[subscriber.plan_id]}}" data-start="{{subscriber.start_date}}" data-end="{{subscriber.end_date}}" data-remaining="{{subscriber.remaining_days}}" data-active="Active" data-meta="{{subscriber.meta_data}}" data-since="{{subscriber.created_at.strftime('%Y-%m-%d %H:%M:%S')}}">Edit</button>
+                    {%else%}
+                    <button class="btn btn-primary edit-btn" data-id="{{subscriber.user_id}}" data-plan="{{plans[subscriber.plan_id]}}" data-start="{{subscriber.start_date}}" data-end="{{subscriber.end_date}}" data-remaining="{{subscriber.remaining_days}}" data-active="Expired" data-meta="{{subscriber.meta_data}}" data-since="{{subscriber.created_at.strftime('%Y-%m-%d %H:%M:%S')}}">Edit</button>
+                    {%endif%}
+                    {%endif%}
+                    <button class="btn delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-subscriber-id="{{ subscriber.user_id }}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="noResults" class="white fw-bold my-3 mx-auto" style="display: none;">No subscribers match your search criteria!</div>
+    {% else %}
+    <h4 class="white fw-bold my-3 mx-auto">You have no subscribers to show!</h4>
+    {%if not subscribers%}
+        <div class="col-6">
+            <a href="/my/subscribers/add" class="btn mb-auto add-subscriber">Add Subscriber</a>
+        </div>
+        {%endif%}
+    {%endif%}
+    <div class="modal" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #03060e; color: #F4F7FB;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="confirmDeleteLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this subscriber? This action cannot be undone.
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a id="confirm-delete-link" href="#" class="btn btn-danger">Yes, Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit Subscriber</h2>
+            <form id="editForm">
+                <input type="hidden" id="subscriber-id" name="user_id">
+                <label for="plan">Plan</label>
+                <select id="plan-select" name="plan" class="mb-3 modalInput">
+                    {%for key,value in plans.items()%}
+                        <option value="{{value}}">{{value}}</option>
+                    {%endfor%}
+                </select>
+                <label for="start-date">Start date</label>
+                <input type="text" class="mb-3 modalInput" id="start-date" name="start_date">
+                <label for="end-date">End date</label>
+                <input type="text" class="mb-3 modalInput" id="end-date" name="end_date">
+                <label for="remaining-days">Remaining days</label>
+                <input type="text" class="modalInput" id="remaining-days" name="remaining_days">
+                <small class="grey mb-3">Can't be edited if subscriber status is expired</small><br>
+                <label for="status" class="mt-3">Active Status</label>
+                <select id="status" name="active" class="modalInput">
+                    <option value="Active">Active</option>
+                    <option value="Expired">Expired</option>
+                </select>
+                <small class="grey mb-3">Setting status to Expired will reset remaining days</small><br>
+                <label for="meta" class="mt-3">Meta Data</label>
+                <textarea id="meta" name="meta_data" class="modalInput"></textarea>
+                <small class="grey">leave blank to keep current meta data</small><br>
+                <label for="since" class="mt-3">Subscriber Since</label>
+                <input type="text" id="since" name="created_at" class="mb-3 modalInput" disabled>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary fw-bold white" id="save-changes-btn">Save Changes</button>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary fw-bold white" id="renew-btn">Renew</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const subscriberId = this.getAttribute('data-subscriber-id');
+                const deleteLink = document.getElementById('confirm-delete-link');
+                deleteLink.href = `/my/subscribers/delete/${subscriberId}`;
+                
+                confirmDeleteModal.style.display = 'block';
+            });
+        });
+        
+        const closeButton = confirmDeleteModal.querySelector('.btn-close-white');
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                confirmDeleteModal.style.display = 'none';
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            });
+        }
+        
+        const cancelButton = confirmDeleteModal.querySelector('.btn-secondary');
+        if (cancelButton) {
+            cancelButton.addEventListener('click', function() {
+                confirmDeleteModal.style.display = 'none';
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            });
+        }
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === confirmDeleteModal) {
+                confirmDeleteModal.style.display = 'none';
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            }
+        });
+    });
+</script>
+<script>
+    var modal = document.getElementById("editModal");
+    const saveChangesBtn = document.getElementById('save-changes-btn');
+    var closeBtn = document.getElementsByClassName("close-btn")[0];
+    var editBtns = document.querySelectorAll(".edit-btn");
+    const renewBtn = document.getElementById('renew-btn')
+    editBtns.forEach(function(button) {
+        button.addEventListener("click", function() {
+            document.getElementById("subscriber-id").value = this.getAttribute("data-id");
+            document.getElementById("plan-select").value = this.getAttribute("data-plan");
+            document.getElementById("start-date").value = this.getAttribute("data-start");
+            document.getElementById("end-date").value = this.getAttribute("data-end");
+            document.getElementById("remaining-days").value = this.getAttribute("data-remaining");
+            document.getElementById("status").value = this.getAttribute("data-active");
+            document.getElementById("meta").value = this.getAttribute("data-meta");
+            document.getElementById("since").value = this.getAttribute("data-since");
+    
+            modal.style.display = "block";
+        });
+        
+    });
+    
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    
+    
+    saveChangesBtn.addEventListener("click", async function(event){
+        event.preventDefault();
+        saveChangesBtn.innerHTML = 'Saving changes...';
+        saveChangesBtn.disabled = true;
+        const subscriberId = document.getElementById('subscriber-id').value;
+        var formData = {
+            plan_name:document.getElementById('plan-select').value,
+            start_date:document.getElementById('start-date').value,
+            end_date:document.getElementById('end-date').value,
+            remaining_days:document.getElementById('remaining-days').value,
+            active:document.getElementById('status').value,
+            meta_data:document.getElementById('meta').value
+        }
+        formData.active = (formData.active === 'Active');
+        if (formData.meta_data == ''){
+            formData.meta_data = null;
+        }
+        try {
+            const response = await fetch(`/api/subscriber/${subscriberId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'X-API-KEY':`{{current_user.api_token}}`
+                    },
+                    body: JSON.stringify(formData)
+                }
+            );
+            const data = await response.json();
+            if (response.ok){
+                const successMessage = document.createElement('div');
+                successMessage.innerHTML = '<i class="bi bi-info-circle">  </i>Data updated successfully.';
+                successMessage.classList.add('message', 'success-message', 'update-message');
+                successMessage.setAttribute('data-aos', 'fade-up');
+                successMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(successMessage);
+                setTimeout(() => {
+                    const successDiv = document.getElementsByClassName('update-message')[0];
+                    if (successDiv) {
+                        successDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            successDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+                location.reload();
+            }
+            else{
+                saveChangesBtn.innerHTML = 'Save changes';
+                saveChangesBtn.disabled = false;
+                const errorMessage = document.createElement('div');
+                errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>${data.message}.`;
+                errorMessage.classList.add('message', 'error-message', 'failed-message');
+                errorMessage.setAttribute('data-aos', 'fade-up');
+                errorMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(errorMessage);
+                setTimeout(() => {
+                    const errorDiv = document.getElementsByClassName('failed-message')[0];
+                    if (errorDiv) {
+                        errorDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            errorDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+            }
+        }
+        catch(error) {
+            saveChangesBtn.innerHTML = 'Save changes';
+            saveChangesBtn.disabled = false;
+            const errorMessage = document.createElement('div');
+            errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>Something went wrong while trying to update subscriber data.`;
+            errorMessage.classList.add('message', 'error-message', 'error-message');
+            errorMessage.setAttribute('data-aos', 'fade-up');
+            errorMessage.setAttribute('data-aos-duration', '800');
+            document.body.appendChild(errorMessage);
+            setTimeout(() => {
+                const errorDiv = document.getElementsByClassName('error-message')[0];
+                if (errorDiv) {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 1000);
+                }
+            }, 3000);
+        }
+
+    });
+    renewBtn.addEventListener("click", async function(event){
+        event.preventDefault();
+        const subscriberId = document.getElementById('subscriber-id').value;
+        renewBtn.innerHTML = 'Renewing...';
+        renewBtn.disabled = true;
+        try{
+            const response = await fetch(`/api/subscriber/${subscriberId}/renew`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type':'application/json',
+                        'X-API-KEY':`{{current_user.api_token}}`
+                    }
+                }
+            );
+            const data = await response.json();
+            if (response.ok){
+                const successMessage = document.createElement('div');
+                successMessage.innerHTML = `<i class="bi bi-info-circle">  </i>Subscriber's subscription renewed.`;
+                successMessage.classList.add('message', 'success-message', 'update-message');
+                successMessage.setAttribute('data-aos', 'fade-up');
+                successMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(successMessage);
+                setTimeout(() => {
+                    const successDiv = document.getElementsByClassName('update-message')[0];
+                    if (successDiv) {
+                        successDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            successDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+                location.reload();
+            }
+            else{
+                renewBtn.innerHTML = 'Renew';
+                renewBtn.disabled = false;
+                const errorMessage = document.createElement('div');
+                errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>${data.message}.`;
+                errorMessage.classList.add('message', 'error-message', 'failed-message');
+                errorMessage.setAttribute('data-aos', 'fade-up');
+                errorMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(errorMessage);
+                setTimeout(() => {
+                    const errorDiv = document.getElementsByClassName('failed-message')[0];
+                    if (errorDiv) {
+                        errorDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            errorDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+            }
+        }
+        catch(error) {
+            renewBtn.innerHTML = 'Renew';
+            renewBtn.disabled = false;
+            console.error(error)
+            const errorMessage = document.createElement('div');
+            errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>Something went wrong while trying to renew subscription.`;
+            errorMessage.classList.add('message', 'error-message', 'error-message');
+            errorMessage.setAttribute('data-aos', 'fade-up');
+            errorMessage.setAttribute('data-aos-duration', '800');
+            document.body.appendChild(errorMessage);
+            setTimeout(() => {
+                const errorDiv = document.getElementsByClassName('error-message')[0];
+                if (errorDiv) {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 1000);
+                }
+            }, 3000);
+        }
+    });
+    const searchInput = document.getElementById('searchInput');
+    const subscribersTable = document.getElementById('subscribersTable');
+    const noResults = document.getElementById('noResults');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const rows = subscribersTable.getElementsByTagName('tr');
+        let hasResults = false;
+        
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let rowMatch = false;
+            
+            for (let j = 0; j < cells.length - 1; j++) {
+                const cellText = cells[j].textContent.toLowerCase();
+                if (cellText.includes(searchValue)) {
+                    rowMatch = true;
+                    break;
+                }
+            }
+            
+            if (rowMatch) {
+                rows[i].style.display = '';
+                hasResults = true;
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+        
+        if (hasResults) {
+            plansTable.style.display = '';
+            noResults.style.display = 'none';
+        } else {
+            plansTable.style.display = 'table';
+            noResults.style.display = 'block';
+        }
+    });
+</script>
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById('message');
+        if (msg) {
+            msg.style.opacity = '0'
+            setTimeout(() => {
+                msg.remove();
+            }, 1000);
+        }
+        }, 3000);
+    setTimeout(() => {
+        const flash_msg = document.getElementById('flahsed-message');
+        if (flash_msg) {
+            flash_msg.style.opacity = '0';
+            setTimeout(() => {
+                flash_msg.remove();
+            }, 1000);
+        }
+    }, 5000);
+</script>
+{%endblock%}

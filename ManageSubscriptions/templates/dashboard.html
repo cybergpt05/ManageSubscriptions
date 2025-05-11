@@ -1,0 +1,186 @@
+{%extends "layout4.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics2.css')}}">
+
+<div class="container mt-5 mb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="h2 fw-bold">Overview</h2>
+        </div>
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-duration="800">
+        <div class="col-md-6 col-12 mb-4">
+            <div class="p-3 api-data-container shadow">
+                <h4 class="fw-bold h4">API Requests Today</h4>
+                {%if api_usage_this_day > 0%}
+                <h5 class="h5 counter" data-target="{{api_usage_this_day}}">0</h5>
+                {%else%}
+                <h5 class="h5">No requests was made</h5>
+                {%endif%}
+            </div>
+        </div>
+        <div class="col-md-6 col-12 mb-4 my-1">
+            <div class="p-3 api-data-container shadow">
+                <h4 class="fw-bold h4">API Requests Month</h4>
+                {%if api_usage_this_month > 0%}
+                <h5 class="h5 counter" data-target="{{api_usage_this_month}}">0</h5>
+                {%else%}
+                <h5 class="h5">No requests was made</h5>
+                {%endif%}
+            </div>
+        </div>
+        <div class="row mb-4 graph-container my-5 py-4 shadow mx-auto" data-aos="fade-up" data-aos-duration="800">
+            <div class="col-12">
+                <h2 class="h2 fw-bold mb-5">API Usage - This Week</h2>
+                {%if graph_file_name%}
+                <img src="{{url_for('static',filename='usage_logs/'+graph_file_name)}}" alt="week chart" >
+                {%else%}
+                <center><h3 class="fw-bold" style="color: #F4F7FB;"> No requests was made</h3></center>
+                {%endif%}
+            </div>
+        </div>
+        <div class="row mt-5" data-aos="fade-up" data-aos-duration="800">
+            <div class="col-12">
+                <h4 class="h4 fw-bold">Plan Usage</h4>
+            </div>
+        </div>
+        <div class="row" data-aos="fade-up" data-aos-duration="800">
+            <div class="col-12">
+                <div class="row d-flex api-requests-container shadow py-4 px-2">
+                    <div class="col-12">
+                        <h4 class="h4 fw-bold">API Requests</h5>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <h6 class="h5"><font class="counter" data-target="{{usage_of_plan}}">0</font>/{{plan_requests}}</h6>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="progress" style="height: 25px; border-radius: 10px; overflow: hidden;">
+                            <div id="dynamicProgress" class="progress-bar" style="height: 100%; width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-5 d-flex justify-content-between" data-aos="fade-up" data-aos-duration="800">
+            <div class="col-12 col-md-6">
+                <h4 class="h4 fw-bold">Subscribers</h4>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-sm-center justify-content-md-end">
+                <a href="/my/subscribers" class="btn text-center subscribers-btn fw-bold">Manage Subscribers</a>
+            </div>
+            <div class="col-md-6 col-12 mb-4 my-1">
+                <div class="p-3 subscribers-data-container shadow ">
+                    <h4 class="fw-bold h4">Total</h4>
+                    {%if subscribers > 0%}
+                    <h5 class="h5 counter" data-target="{{subscribers}}">0</h5>
+                    {%else%}
+                    <h5 class="h5">You have no subscribers yet</h5>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="col-md-6 col-12 mb-4 my-1">
+                <div class="p-3 subscribers-data-container shadow">
+                    <h4 class="fw-bold h4">Active / Inactive</h4>
+                    <h5 class="h5"><font class="fw-bold counter" style="color: #39FF14;" data-target="{{active_subscribers}}">0</font> / <font class="fw-bold counter" style="color: #FF073A;" data-target="{{nonactive_subscribers}}">0</font></h5>
+                </div>
+            </div>
+        </div>
+        <div class="row my-5" data-aos="fade-up" data-aos-duration="800">
+            <div class="col-12">
+                <h4 class="h4 fw-bold">Subscription expiary</h4>
+            </div>
+            <div class="col-12">
+                <h5 class="fw-bold" style="color: #F4F7FB;">{{client_plan}} tier</h5>
+                {%if client_plan != 'free'%}
+                <h6 class="h5 ">In <font class="counter" data-target="{{remaining_days}}">0</font> days</h6>
+                {%else%}
+                <h6 class="h5">free tier has no expiration date</h6>
+                {%endif%}
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+<script>
+    function setProgressBar(used, total) {
+        const percent = Math.min(100, Math.floor((used / total) * 100));
+        const bar = document.getElementById('dynamicProgress');
+        bar.style.width = percent + '%';
+        if (used/total < 0.35){
+            bar.style.backgroundColor = `#00ff22`;
+        }
+        else if ((used/total > 0.35) && (used/total < 0.7)){
+            bar.style.backgroundColor = `#ff9100`;
+        }
+        else{
+            bar.style.backgroundColor = `#d40f0f`;
+        }
+        }
+    
+    setProgressBar({{usage_of_plan}}, {{ plan_requests }});
+    setTimeout(() => {
+          const msg = document.getElementById('message');
+          if (msg) {
+            msg.style.opacity = '0'
+            setTimeout(() => {
+                msg.remove();
+            }, 1000);
+          }
+        }, 3000);
+        setTimeout(() => {
+            const flash_msg = document.getElementById('flahsed-message');
+            if (flash_msg) {
+                flash_msg.style.opacity = '0';
+                setTimeout(() => {
+                    flash_msg.remove();
+                }, 1000);
+            }
+        }, 5000);
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll(".counter");
+
+        counters.forEach(counter => {
+            const updateCount = () => {
+            const target = +counter.getAttribute("data-target");
+            const count = +counter.innerText;
+
+            const increment = target / 100;
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(updateCount, 10);
+            } else {
+                counter.innerText = target;
+            }
+            };
+
+            updateCount();
+        });
+        });
+
+    </script>
+{%endblock%}

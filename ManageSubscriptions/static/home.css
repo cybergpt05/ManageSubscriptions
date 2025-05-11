@@ -1,0 +1,173 @@
+body{
+    color: #FCFAF9;
+}
+.hook{
+    margin:auto !important;
+    font-size: 4rem !important;
+    color: #FCFAF9;
+}
+.description{
+    color: #FCFAF9;
+    margin: 4rem auto 1rem auto !important;
+}
+.go-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 12rem;
+    height: 3rem;
+
+    color: #0A0F1C;
+    background-color:#ADD9F4;
+    border-radius: 28px;
+
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    box-shadow: 0 0 15px #ADD9F4;
+    transition: ease .8s !important;
+}
+.go-btn:hover,.go-btn:focus{
+    background-color: #ADD9F4;
+    box-shadow: 0 0 5px #ADD9F4,
+                0 0 15px #ADD9F4,
+                0 0 25px #ADD9F4,
+                0 0 50px #ADD9F4;
+    color: #0A0F1C;
+    filter: blur();
+    transition: ease-in-out 0.15s !important;
+}
+.fluid-container{
+    gap: 5rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.why-div {
+    margin: 10rem auto !important;
+    width: 100% !important;
+    padding: 0 !important;
+}
+.why-h1 {
+    margin-bottom: 4rem !important;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.card {
+    height: 20rem !important;
+    width: 100%;
+    max-width: 22rem;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding-top: -50px !important;
+    transition-duration: 0.4s;
+    animation: float 3s ease-in-out infinite;
+}
+.card:hover{
+    background-color: rgba(255, 255, 255, 0.096);
+    transition-duration: 0.4s;
+}
+.card-img{
+    margin: 1.5rem auto 1rem 1.5rem !important;
+    width: 90px;
+    height: 90px;
+}
+.card-h4{
+    margin-left: 1.5rem;
+}
+.card-h6{
+    color: #FCFAF9 !important;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+}
+.fast{
+    margin: 0.2rem auto 0.2rem 0.3rem !important;
+    width: 120px;
+    height: 120px;
+}
+.faq-div{
+    margin: 10rem auto !important;
+}
+.accordion-button {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 1rem !important;
+    color: #0A0F1C;
+    border-radius: 16px;
+    font-weight: 600;
+}
+
+.accordion-button:not(.collapsed) {
+color: #0A0F1C;
+background-color: white;
+box-shadow: none;
+}
+
+.accordion-button:focus {
+box-shadow: none;
+border-color: rgba(0,0,0,0.1);
+}
+
+.accordion-button::after {
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
+transition: all 0.2s;
+}
+
+.accordion-button:not(.collapsed)::after {
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-dash' viewBox='0 0 16 16'%3E%3Cpath d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z'/%3E%3C/svg%3E");
+}
+
+.accordion-body {
+padding: 1rem !important;
+}
+
+@media (max-width:768px) {
+    .hook{
+        font-size: 2.5rem !important;
+    }
+    .description{
+        font-size: 1.4rem !important;
+    }
+    .go-btn {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 16rem;
+        height: 3rem;
+        color: #FCFAF9;
+        background-color: #ffffff00;
+        border: 2px solid #ADD9F4;
+        border-radius: 28px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0.3rem auto !important;
+        box-shadow: none !important;
+        transition: ease .8s !important;
+    }
+    .go-btn:hover,.go-btn:focus{
+        background-color: #ADD9F4;
+        box-shadow: 0 0 5px #ADD9F4,
+                    0 0 15px #ADD9F4,
+                    0 0 25px #ADD9F4,
+                    0 0 50px #ADD9F4 !important;
+        color: #0A0F1C;
+        filter: blur();
+        transition: ease .15s !important;
+    }
+    .buttons-container {
+        display: flex;
+        flex-direction: column !important; 
+        align-items: center;
+        gap: 0rem !important; 
+    }
+}

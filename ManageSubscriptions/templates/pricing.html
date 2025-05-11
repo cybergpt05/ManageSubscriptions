@@ -1,0 +1,158 @@
+{% if current_user.is_authenticated %}
+{% extends "layout3.html" %}
+{%else%}
+{% extends "layout2.html" %}
+{%endif%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='pricing.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics2.css')}}">
+
+<div class="container mx-auto">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="row mt-5">
+        <div class="col-12 justify-content-start">
+            <h2 class="h2 fw-bold"> Find the Perfect Plan to Power Your Growth</h2>
+            <h5 class="grey">Every plan unlocks full features — so you’re never held back by limits</h5>
+        </div>
+    </div>
+    <form action="" method="POST" class="pricing-group">
+        <div class="row mt-5">
+            <div class="col-12 col-md-6 col-lg-4 px-2">
+                <div class="card shadow free-card pricing-card" style="--main-color: #4caf4f;">
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <h6 class="bold h2 fw-bold smaller">Free</h6>
+                        </div>
+                    </div>
+                    <font class="price-holder mb-1"><font class="price-text fw-bold d-relative">$0</font>/month</font>
+                    <a href="/my/dashboard"class="free-plan-btn btn text-center mx-auto my-3">Start For Free</a>
+                    <div class="row mt-3">
+                        <div class="col-12 justify-content-center">
+                            <ul>
+                                <li><i class="bi bi-check2 mr-1"></i>200 Requests Per Month</li>
+                                <li><i class="bi bi-check2 mr-1"></i>30 Subscribers limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>API Access Token</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Dashboard & Usage Graphs</li>
+                                <li><i class="bi bi-check2 mr-1"></i>1 Plan limit</li>
+                                <li><i class="bi bi-x mr-1"></i>Email Alerts for Usage</li>
+                                <li><i class="bi bi-x mr-1"></i>Priority Email Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow pro-card pricing-card" style="--main-color: #3f51b5;">
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <h6 class="bold h2 fw-bold smaller">Pro</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="fw-bold h2 best-seller smaller2 text-center">{%if current_user.subscription_type == 'pro'%}Active{%else%}Best seller{%endif%}</h6>
+                        </div>
+                    </div>
+                    <font class="price-holder mb-1"><font class="price-text fw-bold d-relative">$30</font>/month</font>
+                    <button href="/choose_plan" name="plan" value="pro" class="pro-plan-btn btn text-center mx-auto my-3">{%if current_user.subscription_type == 'pro'%}Renew{%else%}Choose plan{%endif%}</button>
+                    <div class="row mt-3">
+                        <div class="col-12 justify-content-center">
+                            <ul>
+                                <li><i class="bi bi-check2 mr-1"></i>20000 Requests Per Month</li>
+                                <li><i class="bi bi-check2 mr-1"></i>500 Subscribers limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>API Access Token</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Dashboard & Usage Graphs</li>
+                                <li><i class="bi bi-check2 mr-1"></i>8 Plans limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Email Alerts for Usage</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Priority Email Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow ultimate-card pricing-card" style="--main-color: #8E65E0;">
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <h6 class="bold h2 fw-bold smaller">Ultimate</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="fw-bold h2 best-value smaller2 text-center">{%if current_user.subscription_type == 'ultimate'%}Active{%else%}Best value{%endif%}</h6>
+                        </div>
+                    </div>
+                    <font class="price-holder mb-1"><font class="price-text fw-bold d-relative">$70</font>/month</font>
+                    <button href="/choose_s" name="plan" value="ultimate" class="ultimate-plan-btn btn text-center mx-auto my-3">{%if current_user.subscription_type == 'ultimate'%}Renew{%else%}Choose plan{%endif%}</button>
+                    <div class="row mt-3">
+                        <div class="col-12 justify-content-center">
+                            <ul>
+                                <li><i class="bi bi-check2 mr-1"></i>200000 Requests Per Month</li>
+                                <li><i class="bi bi-check2 mr-1"></i>5000 Subscribers limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>API Access Token</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Dashboard & Usage Graphs</li>
+                                <li><i class="bi bi-check2 mr-1"></i>15 Plans limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Email Alerts for Usage</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Priority Email Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 custom-row mb-5">
+                <div class="card shadow custom-card pricing-card" style="--main-color: #FF9800;">
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <h6 class="bold h2 fw-bold smaller">Custom</h6>
+                        </div>
+                    </div>
+                    <font class="price-text fw-bold d-relative mb-1">Contact Us</font>
+                    <a href="/custom-plan" class="custom-plan-btn btn text-center mx-auto my-3">Conact Us</a>
+                    <div class="row mt-3">
+                        <div class="col-12 justify-content-center">
+                            <ul>
+                                <li><i class="bi bi-check2 mr-1"></i>Unlimited Requests Per Month</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Unlimited Subscribers</li>
+                                <li><i class="bi bi-check2 mr-1"></i>API Access Token</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Dashboard & Usage Graphs</li>
+                                <li><i class="bi bi-check2 mr-1"></i>15 Plans limit</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Email Alerts for Usage</li>
+                                <li><i class="bi bi-check2 mr-1"></i>Priority Email Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    const group = document.querySelector('.pricing-group');
+    const cards = document.querySelectorAll('.pricing-card');
+  
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        group.classList.add('active');
+      });
+      card.addEventListener('mouseleave', () => {
+        group.classList.remove('active');
+      });
+    });
+</script>
+  
+{%endblock%}

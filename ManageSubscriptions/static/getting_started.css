@@ -1,0 +1,93 @@
+.white{
+    color: #F4F7FB !important;
+}
+.container{
+    max-width: 70% !important;
+}
+.grey{
+    color: #f4f7fbaf !important;
+}
+.api-card{
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+.login-button{
+    max-width: fit-content!important;
+    max-height: fit-content !important;
+    padding: 0.5rem 2rem !important;
+    margin: auto 0 !important;
+    text-align: center !important;
+    background-color: #8E65E0 !important;
+    border: 2px #8E65E0 solid !important;
+    transition: 0.2s ease all;
+}
+.login-button:hover{
+    background-color: #ffffff00 !important;
+    border: 2px #8E65E0 dotted !important;
+    transition: 0.2s ease all;
+}
+.code-card{
+    background-color: rgb(255, 255, 255, 0.05);
+}
+.chevron{
+    display: flex !important;
+    justify-content: end !important;
+    align-items: middle !important;
+}
+.code-block {
+    background-color: #1e1e1e;
+    border-radius: 4px;
+    padding: 15px;
+    color: #e6e6e6;
+    font-family: monospace;
+    overflow-x: auto;
+}
+.footer-button-container{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.footer-button{
+    background-color: #8E65E0 !important;
+    width: 90%;
+    height: 3rem !important;
+    margin-bottom: 1rem !important;
+    display: flex !important;
+    border: 2px #8E65E0 solid !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    color: #F4F7FB !important;
+}
+.footer-button:hover{
+    background-color: #ffffff00 !important;
+    border: 2px #8E65E0 dotted !important;
+    transition: 0.2s ease all;
+}
+.footer-row{
+    margin-bottom: 8rem !important;
+}
+
+
+.code-command { color: #569CD6; }
+.code-flag { color: #C586C0; }
+.code-url { color: #9CDCFE; }
+.code-header { color: #CE9178; }
+.code-keyword { color: #569CD6; }
+.code-variable { color: #9CDCFE; }
+.code-string { color: #CE9178; }
+.code-comment { color: #6A9955; }
+.code-function { color: #DCDCAA; }
+.code-key { color: #9CDCFE; }
+.code-params { color: #4EC9B0; }
+
+
+@media (max-width:1024px){
+    .container{
+        max-width: 90% !important;
+    }
+    .text-end{
+        justify-content: end !important;
+        align-items: middle !important;
+        display: flex !important;
+    }
+}

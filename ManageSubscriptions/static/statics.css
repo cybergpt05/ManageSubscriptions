@@ -1,0 +1,52 @@
+.message {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(255, 75, 75, 0.9);
+    color: white;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    padding: 15px 25px 15px 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 75, 75, 0.8), 0 0 20px rgba(255, 75, 75, 0.4);
+    font-size: 14px;
+    max-width: 250px !important;
+    transition: opacity 1s ease;
+    z-index: 9999;
+    transition: opacity 1s ease;
+}
+.bi-info-circle{
+    margin-right: 0.3rem !important;
+}
+.error-message {
+    background: rgba(255, 50, 50, 0.95);
+    box-shadow: 0 0 12px rgba(255, 50, 50, 0.9), 0 0 20px rgba(255, 0, 0, 0.5);
+    transition: opacity 1s ease;
+}
+
+.success-message {
+    background: rgba(0, 200, 100, 0.95);
+    box-shadow: 0 0 12px rgba(0, 200, 100, 0.9), 0 0 20px rgba(0, 255, 0, 0.5);
+    transition: opacity 1s ease;
+}
+.info-message {
+    background: rgba(64, 181, 202, 0.95);
+    box-shadow: 0 0 12px rgba(64, 181, 202, 0.95), 0 0 20px rgba(64, 181, 202, 0.95);
+    color: #FCFAF9;
+    transition: opacity 1s ease;
+}
+body {  
+    background-color: #0A0F1C !important; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh;
+    font-family: 'Instrument Sans' !important; 
+    padding-top: 1rem !important; 
+    margin: 0;
+}
+html, body { 
+    height: 100%; 
+    margin: 0; 
+} 

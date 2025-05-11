@@ -1,0 +1,84 @@
+{%extends "layout4.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='add_subscriber.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics2.css')}}">
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'success' %}
+    <div id="message" class="message success-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="card-container" data-aos="fade-up" data-aos-duration="800">
+        <div class="card shadow my-5 mx-auto">
+            <div class="card-head p-3">
+                <h3 class="fw-bold text-center header">Add Plan</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label") }}
+                        {{form.name(class="form-control")}}
+                        {% for error in form.name.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.duration_days.label(class="form-label") }}
+                        {{form.duration_days(class="form-control")}}
+                        {% for error in form.duration_days.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label") }}
+                        {{form.description(class="form-control")}}
+                        {% for error in form.description.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {{ form.submit(class="btn form-button") }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById('message');
+        if (msg) {
+        msg.style.opacity = '0'
+        setTimeout(() => {
+            msg.remove();
+        }, 1000);
+        }
+    }, 3000);
+    setTimeout(() => {
+        const flash_msg = document.getElementById('flahsed-message');
+        if (flash_msg) {
+            flash_msg.style.opacity = '0';
+            setTimeout(() => {
+                flash_msg.remove();
+            }, 1000);
+        }
+    }, 5000);
+</script>
+{%endblock%}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='statics.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>{{title}}</title>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container mx-auto my-auto">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, msg in messages %}
+            <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% if message %}
+        {% if category == 'error' %}
+        <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+            <i class="bi bi-info-circle">  </i> {{ message }}
+        </div>
+        {% elif category == 'info' %}
+        <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+            <i class="bi bi-info-circle">  </i> {{ message }}
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+        <div class="card-container" data-aos="fade-up" data-aos-duration="800">
+            <div class="card-flip" id="cardFlip">
+                <div class="card card-front shadow">
+                    <div class="row d-flex">
+                        <div class="col-12 justify-content-start go-back">
+                            <i class="bi bi-arrow-left text-white fw-bold" onclick="javascript:history.back()"></i>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="auth-tabs">
+                            <button class="auth-tab active" id="loginTab" onclick="setActiveTab('loginTab')">Log in</button>
+                            <button class="auth-tab" id="registerTabFront" onclick="flipCard()">Sign up</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {{ login_form.hidden_tag() }}
+                            <input type="hidden" name="form_name" value="login">
+                            <div class="mb-3">
+                                {{ login_form.email.label(class="form-label") }}
+                                {{ login_form.email(class="form-control", id="login-email") }}
+                                {% for error in login_form.email.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                {{ login_form.password.label(class="form-label") }}
+                                <div class="password-field">
+                                    {{ login_form.password(class="form-control", id="login-password") }}
+                                    <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                {% for error in login_form.password.errors %}
+                                    <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    {{ login_form.remember(class="form-check-input", id="remember-me") }}
+                                    <label class="form-check-label" for="remember-me">Remember me</label>
+                                </div>
+                                <a href="request_reset" class="forget-password">Forgot password?</a>
+                            </div>
+                            {{ login_form.submit(class="btn form-button") }}
+                        </form>
+                    </div>
+                </div>
+                <div class="card card-back shadow">
+                    <div class="row d-flex">
+                        <div class="col-12 justify-content-start go-back">
+                            <i class="bi bi-arrow-left text-white fw-bold" onclick="javascript:history.back()"></i>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="auth-tabs">
+                            <button class="auth-tab" id="loginTabBack" onclick="setActiveTab('loginTabBack')">Log in</button>
+                            <button class="auth-tab" id="registerTab" onclick="setActiveTab('registerTab')">Sign up</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {{ register_form.hidden_tag() }}
+                            <input type="hidden" name="form_name" value="register">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    {{ register_form.full_name.label(class="form-label") }}
+                                    {{ register_form.full_name(class="form-control", id="register-name") }}
+                                    {% for error in register_form.full_name.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ register_form.email.label(class="form-label") }}
+                                    {{ register_form.email(class="form-control", id="register-email") }}
+                                    {% for error in register_form.email.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    {{ register_form.password.label(class="form-label") }}
+                                    <div class="password-field">
+                                        {{ register_form.password(class="form-control", id="register-password") }}
+                                        <button type="button" class="password-toggle" onclick="togglePassword('register-password', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    {% for error in register_form.password.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ register_form.confirm_password.label(class="form-label") }}
+                                    <div class="password-field">
+                                        {{ register_form.confirm_password(class="form-control", id="register-password-confirm") }}
+                                        <button type="button" class="password-toggle" onclick="togglePassword('register-password-confirm', this)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    {% for error in register_form.confirm_password.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {{ register_form.submit(class="btn form-button") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function flipCard() {
+            const cardFlip = document.getElementById('cardFlip');
+            cardFlip.classList.toggle('flipped');
+            if (cardFlip.classList.contains('flipped')) {
+                setActiveTab('registerTab');
+            } else {
+                setActiveTab('loginTab');
+            }
+        }
+        if (window.location.hash == '#sign-up'){
+            flipCard();
+        }
+        function setActiveTab(tabId) {
+            const tabs = document.querySelectorAll('.auth-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            const card = document.getElementById('cardFlip');
+
+            if (tabId === 'registerTab' || tabId === 'registerTabFront') {
+                window.location.hash = '#sign-up';
+                if (!card.classList.contains('flipped')) {
+                    flipCard();
+                }
+            }
+
+            if (tabId === 'loginTab' || tabId === 'loginTabBack') {
+                window.location.hash = '#login';
+                if (card.classList.contains('flipped')) {
+                    flipCard();
+                }
+            }
+        }
+
+
+        function togglePassword(inputId, button) {
+            const passwordField = document.getElementById(inputId);
+            const fieldType = passwordField.getAttribute('type');
+            if (fieldType === 'password') {
+                passwordField.setAttribute('type', 'text');
+                button.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.setAttribute('type', 'password');
+                button.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+        setTimeout(() => {
+          const msg = document.getElementById('message');
+          if (msg) {
+            msg.style.opacity = '0'
+            setTimeout(() => {
+                msg.remove();
+            }, 1000);
+          }
+        }, 3000);
+        setTimeout(() => {
+            const flash_msg = document.getElementById('flahsed-message');
+            if (flash_msg) {
+                flash_msg.style.opacity = '0';
+                setTimeout(() => {
+                    flash_msg.remove();
+                }, 1000);
+            }
+        }, 5000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script>
+        fetch("{{ url_for('static', filename='particles-js.json') }}")
+            .then(response => response.json())
+            .then(config => {
+                particlesJS('particles-js', config);
+        });
+    </script>
+</body>
+</html>

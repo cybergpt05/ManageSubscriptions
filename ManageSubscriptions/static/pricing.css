@@ -1,0 +1,183 @@
+.h2{
+    color: #F4F7FB !important;
+}
+.grey{
+    color: #f4f7fb83 !important;
+}
+.best-seller{
+    background-color: #3F51B5b6 !important;
+    border-radius: 1rem !important;
+    padding: 0 3px 3px 3px;
+}
+.best-value{
+    background-color: #8E65E0b6 !important;
+    border-radius: 1rem !important;
+    padding: 0 3px 3px 3px;
+}
+.smaller{
+    font-size: 22px !important;
+}
+.smaller2{
+    font-size: 18px !important;
+}
+.pricing,.pricing:hover{
+    color: #8E65E0 !important;
+    background-color: rgba(255,255,255,0.10);
+}
+.free-card{
+    background-color: #4caf4f28;
+    padding: 20px !important;
+    border: 1px solid #4caf4fb6;
+    transition: all 0.3s ease;
+}
+.pro-card{
+    background-color: #3f51b528;
+    padding: 20px !important;
+    border: 1px solid #3f51b5b6;
+    transition: all 0.3s ease;
+}
+.ultimate-card{
+    background-color: #8E65E028;
+    padding: 20px !important;
+    border: 1px solid #8E65E0b6;
+    transition: all 0.3s ease;
+}
+.custom-card{
+    background-color: #FF980028;
+    margin-top: 1rem !important;
+    padding: 20px !important;
+    border: 1px solid #FF9800b6;
+    min-width: 364px !important;
+    transition: all 0.3s ease;
+}
+.custom-row{
+    padding-left: calc(var(--bs-gutter-x) * .3) !important;
+}
+.price-text{
+    font-size: 2.5rem !important;
+    color: #F4F7FB;
+    font-weight: 700 !important;
+}
+.price-holder{
+    color: #F4F7FB;
+    font-size: 16px;
+}
+.free-plan-btn{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #4caf4f;
+    border-radius: 2rem !important;
+    margin: 10px 10px !important;
+    color: #F4F7FB;
+    font-weight: 600;
+}
+.free-plan-btn:hover{
+    background-color: #4caf4f;
+    color: #03060e !important;
+    box-shadow: 0 0 5px #4caf4fa8,
+                    0 0 15px #4caf4f77,
+                    0 0 25px #4caf4f4f,
+                    0 0 50px #4caf4fc2 !important;
+    filter: blur();
+}
+.pro-plan-btn{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #3F51B5;
+    border-radius: 2rem !important;
+    margin: 10px 10px !important;
+    color: #F4F7FB;
+    font-weight: 600;
+}
+.pro-plan-btn:hover{
+    background-color: #3F51B5;
+    color: #03060e !important;
+    box-shadow: 0 0 5px #3F51B5a8,
+                    0 0 15px #3F51B577,
+                    0 0 25px #3F51B54f,
+                    0 0 50px #3F51B5c2 !important;
+    filter: blur();
+}
+.ultimate-plan-btn{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #8E65E0;
+    border-radius: 2rem !important;
+    margin: 10px 10px !important;
+    color: #F4F7FB;
+    font-weight: 600;
+}
+.ultimate-plan-btn:hover{
+    background-color: #8E65E0;
+    color: #03060e !important;
+    box-shadow: 0 0 5px #8E65E0a8,
+                    0 0 15px #8E65E077,
+                    0 0 25px #8E65E04f,
+                    0 0 50px #8E65E0c2 !important;
+    filter: blur();
+}
+.custom-plan-btn{
+    background-color: rgba(255,255,255,0);
+    border: 1px solid #FF9800;
+    border-radius: 2rem !important;
+    margin: 10px 10px !important;
+    color: #F4F7FB;
+    font-weight: 600;
+}
+.custom-plan-btn:hover{
+    background-color: #FF9800;
+    color: #03060e !important;
+    box-shadow: 0 0 5px #FF9800a8,
+                    0 0 15px #FF980077,
+                    0 0 25px #FF98004f,
+                    0 0 50px #FF9800c2 !important;
+    filter: blur();
+}
+li{
+    color: #F4F7FB;
+    font-weight: 600;
+    list-style: none !important;
+}
+li .bi-check2, .bi-x {
+    vertical-align: middle;
+    margin-right: 8px;
+    color: #F4F7FB;
+    font-size: 1.5rem !important;
+}
+ul{
+    padding-left: 0 !important;
+}
+.pricing-group.active .pricing-card {
+    filter: blur(2px);
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+  
+.pricing-card:hover {
+    filter: blur(0) !important;
+    transform: scale(1.05) !important;
+    z-index: 10;
+    box-shadow: 0 0 5px var(--main-color),
+                0 0 10px var(--main-color),
+                0 0 15px var(--main-color),
+                0 0 25px var(--main-color) !important;
+}
+  
+
+@media (max-width:1024px) {
+    .custom-card{
+        min-width: 304px !important;
+    }
+}
+@media (max-width:1024px) {
+    .ultimate-card{
+        margin-top: 1rem !important;
+    }
+    .card{
+        min-width: 340px !important; 
+    }
+}
+@media (max-width:1024px) {
+    .card{
+        max-width: 80% !important;
+        margin: 0 auto 2rem auto !important;
+    }
+}

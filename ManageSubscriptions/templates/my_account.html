@@ -1,0 +1,189 @@
+{%extends "layout3.html"%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='my_account.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='statics.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="card shadow">
+        <h4 class="fw-bold card-head"> <i class="bi bi-person-circle"></i> My Account</h4>
+        <hr>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <label for="profile-image-input">
+                {% set profile_image_path = 'profile_pics/' + current_user.profile_image %}
+                {% if current_user.profile_image and (profile_image_path | safe) and (current_user.profile_image != '') %}
+                    <img src="{{ url_for('static', filename=profile_image_path) }}" 
+                        onerror="this.onerror=null;this.src='{{ url_for('static', filename='profile_pics/default.png') }}';"
+                        title="Click to change your profile image."
+                        alt="Profile Picture" 
+                        class="rounded-circle">
+                {% else %}
+                    <img src="{{ url_for('static', filename='profile_pics/default.png') }}" 
+                        title="Click to change your profile image."
+                        alt="Profile Picture" 
+                        class="rounded-circle">
+                {% endif %}
+            </label>
+            {{ form.profile_image(id="profile-image-input") }}
+            {% for error in form.profile_image.errors %}
+                <div class="d-flex justify-content-center"><small class="text-danger">{{ error }}</small></div>
+            {% endfor %}
+            <div class="card-body">
+            
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.full_name.label(class="form-label") }}
+                        {{ form.full_name(class="form-control", id="full_name", value=current_user.name)}}
+                        {% for error in form.full_name.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", id="email", value=current_user.email) }}
+                        {% for error in form.email.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.api_token.label(class="form-label") }}
+                        <div class="api-container">
+                            {{ form.api_token(class="form-control", id="api_token", value=current_user.api_token, readonly=True) }}
+                            <button type="button" class="copybutton" onclick="CopyApiToken()">
+                                <i class="fa-regular fa-clone copyButton"></i>
+                            </button>
+                        </div>
+                        {% for error in form.api_token.errors %}
+                            <small class="text-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {% if current_user.subscription_type == 'free' %}
+                        {{ form.plan.label(class="form-label") }}
+                            <div class="api-container">
+                                {{ form.plan(class="form-control", id="plan", value=current_user.subscription_type, readonly=True, disabled=True) }}
+                                <a href="/pricing" class="btn fw-bold subscribeButton">Subscribe</a>
+                            </div>
+                        {% elif current_user.subscription_type == 'pro' %}
+                            {{ form.plan.label(class="form-label") }}
+                            <div class="relative">
+                                {{ form.plan(class="form-control", id="plan", value=current_user.subscription_type ~ ' | ' ~ current_user.remaining_days ~ ' days remaining', readonly=True, disabled=True) }}
+                            </div>
+                        {% elif current_user.subscription_type == 'ultimate' %}
+                            {{ form.plan.label(class="form-label") }}
+                            <div class="relative">
+                                {{ form.plan(class="form-control", id="plan", value=current_user.subscription_type ~ ' | ' ~ current_user.remaining_days ~ ' days remaining', readonly=True, disabled=True) }}
+                            </div>
+                        {% elif current_user.subscription_type == 'custom' %}
+                            {{ form.plan.label(class="form-label") }}
+                            <div class="relative">
+                                {{ form.plan(class="form-control", id="plan", value=current_user.subscription_type ~ ' | ' ~ current_user.remaining_days ~ ' days remaining', readonly=True, disabled=True) }}
+                            </div>
+                        {%else%}
+                        {%endif%}
+                    </div>
+                </div>
+                
+                {{ form.submit(class="btn form-button") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function CopyApiToken() {
+        const input = document.getElementById("api_token");
+        const copyButton = document.getElementsByClassName('copyButton')[0];
+        
+        navigator.clipboard.writeText(input.value).then(() => {
+            window.getSelection().removeAllRanges();
+            if (copyButton.classList.contains('fa-clone')) {
+                copyButton.classList.remove('fa-clone', 'fa-regular');
+                copyButton.classList.add('fa-regular', 'fa-circle-check');
+                copyButton.disabled = true;
+                
+                const successMessage = document.createElement('div');
+                successMessage.innerHTML = '<i class="bi bi-info-circle">  </i>API token is copied.';
+                successMessage.classList.add('message', 'success-message', 'copied-message');
+                successMessage.setAttribute('data-aos', 'fade-up');
+                successMessage.setAttribute('data-aos-duration', '800');
+                document.body.appendChild(successMessage);
+                
+                setTimeout(() => {
+                    const successDiv = document.getElementsByClassName('copied-message')[0];
+                    if (successDiv) {
+                        successDiv.style.opacity = '0';
+                        setTimeout(() => {
+                            successDiv.remove();
+                        }, 1000);
+                    }
+                }, 3000);
+                
+                setTimeout(() => {
+                    copyButton.classList.remove('fa-regular', 'fa-circle-check');
+                    copyButton.classList.add('fa-regular','fa-clone');
+                    copyButton.disabled = false;
+                }, 3000);
+            }
+        }).catch(err => {
+            const errorMessage = document.createElement('div');
+            errorMessage.innerHTML = '<i class="bi bi-info-circle">  </i>Failed to copy API token.';
+            errorMessage.classList.add('message', 'error-message', 'failed-message');
+            errorMessage.setAttribute('data-aos', 'fade-up');
+            errorMessage.setAttribute('data-aos-duration', '800');
+            document.body.appendChild(errorMessage);
+            
+            setTimeout(() => {
+                const errorDiv = document.getElementsByClassName('failed-message')[0];
+                if (errorDiv) {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 1000);
+                }
+            }, 3000);
+        });
+    }
+
+    setTimeout(() => {
+          const msg = document.getElementById('message');
+          if (msg) {
+            msg.style.opacity = '0'
+            setTimeout(() => {
+                msg.remove();
+            }, 1000);
+          }
+        }, 3000);
+    setTimeout(() => {
+        const flash_msg = document.getElementById('flahsed-message');
+        if (flash_msg) {
+            flash_msg.style.opacity = '0';
+            setTimeout(() => {
+                flash_msg.remove();
+            }, 1000);
+        }
+    }, 5000);
+</script>
+{%endblock%}

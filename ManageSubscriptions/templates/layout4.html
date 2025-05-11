@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{url_for('static', filename='layout3.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <nav class="nav fixed-top desktop-only" id="desktop-nav">
+        <a href="/" class="brand desktop-only">Subly</a>
+        <span class="items-container desktop-only">
+            {%if current_user.subscription_type == 'free'%}
+            <a href="/pricing" class="nav-item pricing desktop-only"> <i class="bi bi-currency-dollar"></i>Pricing</a>
+            <a href="/developer/getting-started" class="nav-item devs desktop-only"><i class="bi bi-code-slash"></i> Developers</a>
+            {%else%}
+            <a href="/my/subscribers" class="nav-item subscribers desktop-only"> <i class="bi bi-people-fill"></i>Subscribers</a>
+            <a href="/my/plans" class="nav-item plans desktop-only"> <i class="bi bi-diagram-3-fill"></i>Plans</a>
+            {%endif%}
+            <a href="/my/dashboard" class="nav-item dashboard desktop-only"><i class="fa fa-chart-simple"></i> Dashboard</a>
+            <a href="/my/account" class="nav-item account desktop-only"><i class="bi bi-person-fill"></i> My Account</a>
+            <a href="/logout" class="nav-item logout desktop-only">Logout  <i class="bi bi-box-arrow-right"></i></a>
+        </span>
+    </nav>
+    <nav class="nav navbar-expand-lg fixed-top mobile-only" id="mobile-nav">
+        <div class="container-fluid mobile-only">
+            <a href="/" class="brand mobile-only">Subly</a>
+            <div class="dropdown mobile-only">
+                <button class="btn btn-link p-0 mobile-only" style="text-decoration: none !important;" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleHamburger()">
+                    <i class="bi bi-list mobile-only" id="hamburger-icon"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end mobile-only" aria-labelledby="userDropdown">
+                    {%if current_user.subscription_type == 'free'%}
+                    <li><a href="/pricing" class="nav-item pricing mobile-only"> <i class="bi bi-currency-dollar"></i>Pricing</a></li>
+                    <li><a href="/developer/getting-started" class="nav-item devs mobile-only"><i class="bi bi-code-slash"></i> Developers</a></li>
+                    {%else%}
+                    <li><a href="/my/subscribers" class="nav-item subscribers mobile-only"> <i class="bi bi-people-fill"></i>Subscribers</a></li>
+                    <li><a href="/my/plans" class="nav-item plans mobile-only"> <i class="bi bi-diagram-3-fill"></i>Plans</a></li>
+                    {%endif%}
+                    <li><a href="/developer/getting-started" class="nav-item mobile-only"><i class="bi bi-code-slash"></i> Developers</a></li>
+                    <li><a href="/my/dashboard" class="nav-item dashboard mobile-only"><i class="fa fa-chart-simple"></i> Dashboard</a></li>
+                    <li><a href="/my_account" class="nav-item account mobile-only"><i class="bi bi-person"></i> My Account</a></li>
+                    <li><a href="/logout" class="nav-item logout mobile-only">Logout  <i class="bi bi-box-arrow-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+
+    {%block content%}
+
+    {%endblock%}
+    <footer class="pt-5 pb-2 mt-auto footer-end">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-3 mb-4">
+                    <h3 class="fw-bold colored-hook">Subly</h3>
+                    <p class="p"><a href="/pricing" class="text-decoration-none colored-hook fw-bold">Unlock</a> the Future of Subscription-Management</p>
+                    <a href="/pricing" class="try-btn d-none d-md-flex d-lg-flex d-xl-flex d-xxl-flex">Try Subscription-Management</a>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <h6 class="ul-description">Company</h6>
+                    <ul class="list-unstyled">
+                    <li><a href="/pricing" class="footer-link text-decoration-none fw-bold">Pricing</a></li>
+                    <li><a href="/about" class="footer-link text-decoration-none fw-bold">About Us</a></li>
+                    <li><a href="/support" class="footer-link text-decoration-none fw-bold">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <h6 class="ul-description">Explore</h6>
+                    <ul class="list-unstyled">
+                    <li><a href="/my/subscribers" class="footer-link text-decoration-none fw-bold">My subscribers</a></li>
+                    <li><a href="/my/plans" class="footer-link text-decoration-none fw-bold">My plans</a></li>
+                    <li><a href="/my/dashboard" class="footer-link text-decoration-none fw-bold">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <h6 class="ul-description">Developers</h6>
+                    <ul class="list-unstyled">
+                    <li><a href="/developer/getting-started" class="footer-link text-decoration-none fw-bold">Getting started</a></li>
+                    <li><a href="/developer/api" class="footer-link text-decoration-none fw-bold">API docs</a></li>
+                    <li><a href="/developer/code-examples" class="footer-link text-decoration-none fw-bold">Code examples</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-dark">
+            <div class="text-center">
+                <small>© 2025 Subly. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function toggleHamburger() {
+            const icon = document.getElementById('hamburger-icon');
+            icon.classList.toggle('bi-list');
+            icon.classList.toggle('bi-x');
+            icon.classList.toggle('animate-hamburger');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script>
+      fetch("{{ url_for('static', filename='particles-js.json') }}")
+          .then(response => response.json())
+          .then(config => {
+              particlesJS('particles-js', config);
+          });
+    </script>
+</body>
+</html>

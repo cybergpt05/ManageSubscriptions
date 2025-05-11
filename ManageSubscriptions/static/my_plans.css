@@ -1,0 +1,294 @@
+.white{
+    color: #F4F7FB !important;
+}
+.grey{
+    color: #f4f7fbaf !important;
+}
+.plans,.plans:hover{
+    color: #8E65E0 !important;
+    background-color: rgba(255,255,255,0.10);
+}
+.responsive-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background-color: rgba(255,255,255,0.) !important;
+    border-radius: 1rem !important;
+    border: 1px solid rgba(255,255,255,0.5);
+    margin-bottom: 5rem !important;
+}
+.responsive-table th,
+.responsive-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.edit-btn{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #FFB347 !important;
+    color: #FCFAF9;
+    font-weight: 600 !important;
+}
+.edit-btn:hover{
+    background-color: #FFB347 !important;
+    box-shadow: 0 0 2px #FFB347,
+                    0 0 5px #FFB347,
+                    0 0 10px #FFB347,
+                    0 0 15px #FFB347 !important;
+    color: #0A0F1C !important;
+    font-weight: 600 !important;
+}
+.add-plan{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #B4C5D4 !important;
+    width: fit-content !important;
+    color: #FCFAF9;
+    padding: 0.5rem !important;
+    font-weight: 600 !important;
+}
+.add-plan:hover{
+    background-color: #B4C5D4 !important;
+    box-shadow: 0 0 2px #B4C5D4,
+                    0 0 5px #B4C5D4,
+                    0 0 10px #B4C5D4,
+                    0 0 15px #B4C5D4 !important;
+    color: #0A0F1C !important;
+    font-weight: 600 !important;
+}
+.delete-btn{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #ff002b !important;
+    color: #FCFAF9;
+    font-weight: 600 !important;
+    text-align: center !important;
+    margin-left: 1rem;
+    width: 100% !important;
+}
+.delete-btn:hover{
+    background-color: #ff002b !important;
+    box-shadow: 0 0 2px #ff002b,
+                    0 0 5px #ff002b,
+                    0 0 10px #ff002b,
+                    0 0 15px #ff002b !important;
+    color: #0A0F1C !important;
+    font-weight: 600 !important;
+    
+}
+#searchInput{
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #B4C5D4 !important;
+    height: 3rem !important;
+}
+#searchInput:focus{
+    box-shadow: none !important;
+}
+#searchInput::placeholder{
+    color: #B4C5D4 !important;
+}
+
+@media screen and (max-width: 768px) {
+    .responsive-table thead {
+        display: none;
+        border: none !important;
+    }
+    .delete-btn{
+        margin-left: 0 !important;
+        width: fit-content !important;
+    }
+    tbody{
+        border: 1px solid #ffffff00 !important;
+    }
+    .responsive-table tr {
+        display: block;
+        margin-bottom: 15px !important;
+        border: 1px solid rgba(255,255,255,0.4) !important;
+        border-radius: 1rem !important;
+        padding: 10px !important;
+        background: rgba(255,255,255,0.1) !important;
+    }
+
+    .responsive-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 5px;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .responsive-table td:last-child {
+        border-bottom: none;
+    }
+
+    .responsive-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #F4F7FB;
+    }
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(3, 6, 14, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #0A0F1C;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #8E65E0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    color: #F4F7FB;
+    animation: slideDown 0.3s ease-in-out;
+}
+
+.close-btn {
+    color: #B4C5D4;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #FFB347;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 10px;
+    border: 1px solid #B4C5D4;
+    background-color: transparent;
+    color: #F4F7FB;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.modal-content label {
+    font-weight: 600;
+    color: #F4F7FB;
+}
+
+.modal-content .btn {
+    background-color: #8E65E0;
+    color: #F4F7FB;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+.modalInput{
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    transition: ease 0.2s all;
+}
+.modalInput:focus{
+    box-shadow: none !important;
+    border: 1px solid rgba(255,255,255,0.6) !important;
+    outline: none !important;
+    transition: ease 0.2s all;
+}
+.modal-content .btn:hover {
+    background-color: #8E65E0;
+}
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(3, 6, 14, 0.5);
+    z-index: 1040; 
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(3, 6, 14, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #0A0F1C;
+    margin: 10% auto; 
+    padding: 30px;
+    border: 1px solid #8E65E0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    color: #F4F7FB;
+    animation: slideDown 0.3s ease-in-out;
+    position: relative; 
+}
+
+.btn-close-white {
+    position: relative;
+    z-index: 100;
+    pointer-events: auto; 
+}
+
+.modal-footer .btn {
+    position: relative;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+.modal-dialog {
+    position: relative;
+    pointer-events: auto;
+}
+
+.modal-body, .modal-header, .modal-footer {
+    position: relative;
+    z-index: 99;
+    pointer-events: auto;
+}
+
+.modal-backdrop {
+    display: none !important;
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        margin: 20% auto;
+        padding: 20px;
+    }
+}
+@media (min-width: 768px) {
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+    .delete-btn{
+        margin-left: 0 !important;
+    }
+    .edit-btn{width: 100% !important;}
+}

@@ -1,0 +1,60 @@
+.container{
+    width: 70%;
+}
+.overview{
+    color: #F4F7FB !important;
+}
+.h2{
+    color: #F4F7FB;
+}
+.h5{
+    color: #f4f7fbaf !important;
+}
+.h4{
+    color: #F4F7FB !important;
+    margin: 0 !important;
+    height: fit-content !important;
+    margin-bottom: 20px !important;
+}
+.api-data-container{
+    background-color: rgba(255, 255, 255, 0.14);
+    filter: blur();
+    border-radius: 1rem !important;
+}
+.dashboard,.dashboard:hover{
+    color: #8E65E0 !important;
+    background-color: rgba(255,255,255,0.10);
+}
+.subscribers-btn{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #B4C5D4 !important;
+    width: fit-content !important;
+    height: fit-content !important;
+    padding: 10px !important;
+    color: #FCFAF9;
+    font-weight: 600 !important;
+    text-align: middle !important;
+    margin-bottom: 1rem !important;
+}
+.subscribers-btn:hover{
+    background-color: #B4C5D4 !important;
+    box-shadow: 0 0 2px #B4C5D4,
+                    0 0 5px #B4C5D4,
+                    0 0 10px #B4C5D4,
+                    0 0 15px #B4C5D4 !important;
+    color: #0A0F1C !important;
+    font-weight: 600 !important;
+}
+img{
+    max-width: 100% !important;
+}
+.graph-container,.api-requests-container,.subscribers-data-container{
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem !important;
+}
+#dynamicProgress,.progress{
+    height: 7px !important;
+}
+.progress{
+    background-color: rgba(255, 255, 255, 0.14);
+}

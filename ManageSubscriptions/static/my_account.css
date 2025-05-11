@@ -1,0 +1,200 @@
+.bi-person-circle{
+    margin-right: 5px !important;
+}
+.container{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+.card{
+    background-color: rgba(255,255,255,0.05) !important;
+    width: fit-content !important;
+    height: fit-content !important;
+    padding-top: 20px !important;
+    margin-bottom: 1rem !important;
+}
+.account,.account:hover{
+    color: #8E65E0 !important;
+    background-color: rgba(255,255,255,0.10);
+}
+.card-head{
+    color: #F4F7FB;
+    margin: 0 auto 20px 1rem !important;
+}
+.rounded-circle{
+    width: 90px;
+    height: 90px;
+    object-fit: cover; 
+    cursor: pointer;
+}
+label{
+    text-align: center !important;
+    width: 100% !important;
+}
+hr{
+    color: #F4F7FB !important;
+    margin: 0 !important;
+    margin-bottom: 1rem !important;
+}
+#profile-image-input{
+    display:none !important;
+}
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -10px;
+    margin-left: -10px;
+}
+.card-body { 
+    padding: 1.5rem; 
+} 
+.form-group {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+.form-label { 
+    font-weight: 600; 
+    margin-bottom: 8px; 
+    color: #F4F7FB;
+    text-align: left !important;
+} 
+.api-container { 
+    position: relative; 
+} 
+.copybutton { 
+    position: absolute; 
+    top: 50%; 
+    right: 10px; 
+    transform: translateY(-50%); 
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px; 
+    font-size: 14px; 
+    z-index: 2;
+}
+.subscribeButton{
+    position: absolute;
+    transform: translateY(-50%);
+    background-color: #8E65E0;
+    border: none !important;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    z-index: 2;
+    top: 50%;
+    right: 10px;
+    color: #F4F7FB !important;
+    padding: 7px !important;
+}
+.subscribeButton:hover{
+    background-color: #8E65E0 !important;
+    border: 1px solid #8E65E0;
+    box-shadow: 0 0 1px #8E65E0,
+                    0 0 2px #8E65E0,
+                    0 0 6px #8E65E0,
+                    0 0 8px #8E65E0 !important;
+}
+#api_token {
+    padding-right: 2.5rem;
+}
+.fa-regular{
+    color: #B4C5D4 !important;
+    transition: text-shadow 0.15s ease-in-out;
+}
+.fa-clone:hover{
+    text-shadow: 1px 2px 5px #B4C5D4 !important;
+    transition: text-shadow 0.15s ease-in-out;
+}
+.form-control { 
+    border-radius: 10px; 
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border: 1px solid #B4C5D4; 
+    background-color: rgba(0, 0, 0, 0.15) !important; 
+    transition: all 0.3s; 
+    color: #F4F7FB !important;
+} 
+#api_token:focus{
+    box-shadow: none !important;
+    border: 1px solid #B4C5D4;
+}
+#full_name,#email,#api_token,#plan{
+    height: 3rem !important;
+}
+#full_name:focus,#email:focus{
+    border: 1px solid #B4C5D4;
+    box-shadow: 0 0 1px #B4C5D4,
+                    0 0 2px #B4C5D4,
+                    0 0 6px #B4C5D4,
+                    0 0 8px #B4C5D4 !important;
+}
+.form-button{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    margin-top: 1rem !important;
+    border: 1px solid #8E65E0 !important;
+    width: 100% !important;
+    color: #FCFAF9;
+    height: 3rem !important;
+    font-weight: 600 !important;
+}
+.form-button:hover{
+    background-color: #8E65E0 !important;
+    box-shadow: 0 0 2px #8E65E0,
+                    0 0 5px #8E65E0,
+                    0 0 10px #8E65E0,
+                    0 0 15px #8E65E0 !important;
+    color: #0A0F1C !important;
+    font-weight: 600 !important;
+}
+@media (max-width: 1024px) {
+    body,main,html{
+        padding-top: 888.3rem !important;
+    }
+    .card{
+        max-width: 90% !important;
+    }
+}
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        width: 50%;
+    }
+    body,main,html{
+        padding-top: 3.3rem !important;
+    }
+}
+@media (max-width: 767px) {
+    .form-row {
+        display: block;
+    }
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+    body,main,html{
+        padding-top: 8.3rem !important;
+    }
+}
+@media (max-width:430px) {
+    .form-group {
+        width: 100%;
+    }
+    .card{
+        max-width: 90% !important;
+    }
+    #full_name,#email,#api_token,#plan{
+        height: 2.7rem !important;
+    }
+    .text-danger {
+        font-size: 16px;
+        display: block;
+        word-wrap: break-word;
+    }
+}

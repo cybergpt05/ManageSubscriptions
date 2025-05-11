@@ -1,0 +1,64 @@
+{%if current_user.is_authenticated%}
+    {%extends "layout4.html"%}
+{%else%}
+    {%extends "layout.html"%}
+{%endif%}
+{%block content%}
+<link rel="stylesheet" href="{{url_for('static', filename='support.css')}}">
+<div class="container px-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+        <div class="message {{ category }}-message" id="flahsed-message" data-aos="fade-up" data-aos-duration="800"><i class="bi bi-info-circle"></i>{{ msg }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if message %}
+    {% if category == 'error' %}
+    <div id="message" class="message error-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% elif category == 'info' %}
+    <div id="message" class="message info-message" data-aos="fade-up" data-aos-duration="800">
+        <i class="bi bi-info-circle">  </i> {{ message }}
+    </div>
+    {% endif %}
+    {%endif%}
+    {% if current_user.is_authenticated %}
+    <h1 class="fw-bold white mt-5">Contact Us</h1>
+    {% else %}
+    <h1 class="fw-bold white">Contact Us</h1>
+    {% endif %}
+    <h6 class="grey mt-3">Let's talk about how we can help you. Fill out the form or send an email at support@subly.io</h6>
+    <form action="" method="POST">
+        {{form.hidden_tag()}}
+        <div class="mt-4">
+            {{form.full_name.label(class="form-label white fw-bold form-label")}}
+            {{form.full_name(class="form-control form-field")}}
+            {% for error in form.full_name.errors %}
+                <small class="text-danger">{{error}}</small>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            {{form.email.label(class="form-label white fw-bold")}}
+            {{form.email(class="form-control form-field")}}
+            {% for error in form.email.errors %}
+                <small class="text-danger">{{error}}</small>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            {{form.message.label(class="form-label white fw-bold")}}
+            {{form.message(class="form-control form-field")}}
+            {% for error in form.message.errors %}
+                <small class="text-danger">{{error}}</small>
+            {% endfor %}
+        </div>
+        {% if current_user.is_authenticated %}
+            {{ form.submit(class="btn submit-btn mt-4 mb-5 fw-bold") }}
+        {% else %}
+            {{ form.submit(class="btn btn-submit mt-4 mb-5 fw-bold") }}
+        {% endif %}
+    </form>
+</div>
+{%endblock%}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{url_for('static', filename='layout3.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='getting_started.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <nav class="nav fixed-top desktop-only" id="desktop-nav">
+        <a href="/" class="brand desktop-only">Subly</a>
+        <span class="items-container desktop-only">
+            <a href="/pricing" class="nav-item pricing desktop-only"> <i class="bi bi-currency-dollar"></i>Pricing</a>
+            <a href="/developer/api" class="nav-item docs desktop-only"><i class="bi bi-book-fill"></i> API Docs</a>
+            <a href="/developer/code-examples" class="nav-item account desktop-only"><i class="bi bi-code-slash"></i> Examples</a>
+            <a href="/support" class="nav-item desktop-only"><i class="bi bi-headset"></i> Support</a>
+        </span>
+    </nav>
+    <nav class="nav navbar-expand-lg fixed-top mobile-only" id="mobile-nav">
+        <div class="container-fluid mobile-only">
+            <a href="/" class="brand mobile-only">Subly</a>
+            <div class="dropdown mobile-only">
+                <button class="btn btn-link p-0 mobile-only" style="text-decoration: none !important;" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleHamburger()">
+                    <i class="bi bi-list mobile-only" id="hamburger-icon"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end mobile-only" aria-labelledby="userDropdown">
+                    <li><a href="/pricing" class="nav-item pricing mobile-only"> <i class="bi bi-currency-dollar"></i>Pricing</a></li>
+                    <li><a href="/developer/api" class="nav-item docs mobile-only"><i class="bi bi-book-fill"></i> API Docs</a></li>
+                    <li><a href="/developer/code-examples" class="nav-item account mobile-only"><i class="bi bi-code-slash"></i> Examples</a></li>
+                    <li><a href="/support" class="nav-item mobile-only"><i class="bi bi-headset"></i> Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mx-auto">
+        <h2 class="fw-bold white mt-5" data-aos="fade-in" data-aos-duration="800">Get Started</h2>
+        <h6 class="grey mt-3" data-aos="fade-in" data-aos-duration="800">Welcome to Subly API, you can use our API to access Subly API endpoint, which can get information about your subscribers where you can add, modify and delete any of them at anytime!</h6>
+        <h5 class="white fw-bold mt-5" data-aos="fade-in" data-aos-duration="800">Authentication</h5>
+        <h6 class="grey mt-3" data-aos="fade-in" data-aos-duration="800">The Subly API uses API key to authenticate requests. You can see your API key in your account dashboard.</h6>
+        <div class="card api-card shadow mt-5 px-4 py-3 mx-md-2" data-aos="fade-up" data-aos-duration="800">
+            <div class="row">
+                <div class="col-6 justify-content-between">
+                    <h5 class="white fw-bold">Get your API key</h5>
+                    {% if current_user.is_authenticated %}
+                    <h5 class="grey">You can the API key from account dashboard</h5>
+                    {% else %}
+                    <h5 class="grey">You must be logged in to get your API key</h5>
+                    {% endif %}
+                    
+                </div>
+                <span class="col-6 text-end pt-2">
+                    {% if current_user.is_authenticated %}
+                    <a href="/my/account" class="btn login-button fw-bold white">My Account</a>
+                    {% else %}
+                    <a href="/login" class="btn login-button fw-bold white">Login</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <h5 class="white fw-bold mt-5 mb-4" data-aos="fade-in" data-aos-duration="800">Authentication</h5>
+        <div class="card shadow code-card mt-3 px-4 pt-3 mx-md-2 pb-2" data-aos="fade-up" data-aos-duration="600">
+            <div class="row justify-content-between">
+                <div class="col-6 mt-2">
+                    <h5 class="white fw-bold">Curl</h5>
+                </div>
+                <div class="col-6 chevron text-end mb-2">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#curlDescription" aria-expanded="false" aria-controls="curlDescription">
+                        <i class="bi bi-chevron-down white"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="collapse" id="curlDescription">
+                <div class="card-body">
+                    <pre class="code-block"><code><span class="code-command">curl</span> <span class="code-flag">-X</span> <span class="code-string">GET</span> <span class="code-url">https://subly.io/api/endpoint</span> \<br><span class="code-flag">-H</span> <span class="code-header">"X-API-KEY: YOUR_API_KEY"</span> \<br><span class="code-flag">-H</span> <span class="code-header">"Content-Type: application/json"</span></code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow code-card mt-3 px-4 pt-3 mx-md-2 pb-2" data-aos="fade-up" data-aos-duration="600">
+            <div class="row justify-content-between">
+                <div class="col-6 mt-2">
+                    <h5 class="white fw-bold">Python</h5>
+                </div>
+                <div class="col-6 chevron text-end mb-2">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#pythonDescription" aria-expanded="false" aria-controls="pythonDescription">
+                        <i class="bi bi-chevron-down white"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="collapse" id="pythonDescription">
+                <div class="card-body">
+                    <pre class="code-block"><code><span class="code-keyword">import</span> requests<br><br><span class="code-comment"># API endpoint</span><br><span class="code-variable">url</span> = <span class="code-string">"https://subly.io/api/endpoint"</span><br><br><span class="code-comment"># Headers</span><br><span class="code-variable">headers</span> = {<br>&nbsp;&nbsp;<span class="code-string">"X-API-KEY"</span>: <span class="code-string">"YOUR_API_KEY"</span>,<br>&nbsp;&nbsp;<span class="code-string">"Content-Type"</span>: <span class="code-string">"application/json"</span><br>}<br><br><span class="code-comment"># Make the GET request</span><br><span class="code-variable">response</span> = requests.get(<span class="code-variable">url</span>, headers=<span class="code-variable">headers</span>)<br><br><span class="code-comment"># Print the response</span><br>print(<span class="code-variable">response</span>.status_code)<br>print(<span class="code-variable">response</span>.json())</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow code-card mt-3 px-4 pt-3 mx-md-2 p-2" id="jscard" data-aos="fade-up" data-aos-duration="600">
+            <div class="row justify-content-between">
+                <div class="col-6 mt-2">
+                    <h5 class="white fw-bold">Javascript</h5>
+                </div>
+                <div class="col-6 chevron text-end mb-2">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#javascriptDescription" aria-expanded="false" aria-controls="javascriptDescription">
+                        <i class="bi bi-chevron-down white"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="collapse" id="javascriptDescription">
+                <div class="card-body">
+                    <pre class="code-block"><code><span class="code-function">fetch</span>(<span class="code-string">'https://subly.io/api/endpoint'</span>, {<br>&nbsp;&nbsp;<span class="code-key">method</span>: <span class="code-string">'GET'</span>,<br>&nbsp;&nbsp;<span class="code-key">headers</span>: {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'X-API-KEY'</span>: <span class="code-string">'YOUR_API_KEY'</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'Content-Type'</span>: <span class="code-string">'application/json'</span><br>&nbsp;&nbsp;}<br>})<br>.<span class="code-function">then</span>(<span class="code-params">response</span> => <span class="code-params">response</span>.json())<br>.<span class="code-function">then</span>(<span class="code-params">data</span> => console.log(<span class="code-params">data</span>))<br>.<span class="code-function">catch</span>(<span class="code-params">error</span> => console.error(<span class="code-string">'Error:'</span>, <span class="code-params">error</span>));</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5 footer-row">
+            <div class="col-12 footer-button-container text-center" data-aos="fade-in" data-aos-duration="1200">
+                <a href="/developer/api" class="btn fw-bold mx-auto footer-button">API Docs</a>
+            </div>
+            <div class="col-12 footer-button-container" data-aos="fade-in" data-aos-duration="1200">
+                <a href="/developer/code-examples" class="btn fw-bold mx-auto footer-button">Code Examples</a>
+            </div>
+            <div class="col-12 footer-button-container" data-aos="fade-in" data-aos-duration="1200">
+                <a href="/support" class="btn fw-bold mx-auto footer-button">Support</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script>
+        fetch("{{ url_for('static', filename='particles-js.json') }}")
+            .then(response => response.json())
+            .then(config => {
+                particlesJS('particles-js', config);
+        });
+    </script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function toggleHamburger() {
+            const icon = document.getElementById('hamburger-icon');
+            icon.classList.toggle('bi-list');
+            icon.classList.toggle('bi-x');
+            icon.classList.toggle('animate-hamburger');
+        }
+        setTimeout(() => {
+          const msg = document.getElementById('message');
+          if (msg) msg.style.opacity = '0';
+        }, 3000);
+        setTimeout(() => {
+          const flash_msg = document.getElementById('flahsed-message');
+          if (flash_msg) flash_msg.style.opacity = '0';
+        }, 5000);
+    </script>
+</body>
+</html>

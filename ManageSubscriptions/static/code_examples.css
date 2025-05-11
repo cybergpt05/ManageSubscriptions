@@ -1,0 +1,93 @@
+*{
+    color: #F4F7FB;
+}
+.code-container {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background-color: #0d1117;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.white{
+    color: #F4F7FB !important;
+}
+.grey{
+    color: #f4f7fb83 !important;
+}
+.code-header {
+    background-color: #161b22;
+    padding: 8px 16px;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.code-body {
+    display: flex;
+    overflow-x: auto;
+}
+
+.line-numbers {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px;
+    background-color: #161b22;
+    border-right: 1px solid #30363d;
+    text-align: right;
+    user-select: none;
+    color: #6e7681;
+}
+
+.code-content {
+    flex: 1;
+    padding: 10px 15px;
+    white-space: pre;
+    overflow-x: auto;
+    tab-size: 4;
+}
+.copybutton {
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px; 
+    font-size: 18px; 
+    z-index: 2;
+}
+.fa-clone:hover{
+    text-shadow: 1px 2px 5px #8E65E0 !important;
+    transition: text-shadow 0.15s ease-in-out;
+}
+.fa-regular{
+    color: #8E65E0 !important;
+    transition: text-shadow 0.15s ease-in-out;
+}
+.footer-button{
+    background-color: #8E65E0 !important;
+    width: 90%;
+    height: 3rem !important;
+    margin-bottom: 1rem !important;
+    display: flex !important;
+    border: 2px #8E65E0 solid !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    color: #F4F7FB !important;
+}
+.footer-button:hover{
+    background-color: #ffffff00 !important;
+    border: 2px #8E65E0 dotted !important;
+    transition: 0.2s ease all;
+}
+.footer-row{
+    margin-bottom: 8rem !important;
+}
+
+.token.tag { color: #7ee787 !important; }
+.token.attr-name { color: #79c0ff !important; }
+.token.attr-value { color: #a5d6ff !important; }
+.token.comment { color: #8b949e !important; }
+.token.style-tag { color: #ff7b72 !important; }
+.token.property { color: #79c0ff !important; }
+.token.selector { color: #d2a8ff !important; }
+.token.value { color: #a5d6ff !important; }

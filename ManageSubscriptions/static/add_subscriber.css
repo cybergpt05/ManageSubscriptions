@@ -1,0 +1,69 @@
+.card {
+    width: 70% !important; 
+    height: fit-content !important; 
+    border-radius: 15px; 
+    overflow: hidden; 
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.form-control { 
+    border-radius: 10px; 
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border: 1px solid #FFB347; 
+    background-color: rgba(0, 0, 0, 0.15) !important; 
+    transition: all 0.3s; 
+    color: #F4F7FB !important;
+}
+select{
+    width: 100% !important;
+    height: 3rem !important;
+    color: #F4F7FB !important;
+    border-radius: 10px !important;
+    background-color: rgba(255,255,255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    padding: 12px !important;
+}
+.form-control:focus { 
+    border-color: #FFB347 !important; 
+    box-shadow: 0 0 1px #FFB347,
+                  0 0 2px #FFB347,
+                  0 0 6px #FFB347,
+                  0 0 8px #FFB347 !important;
+}
+.form-label { 
+    font-weight: 600; 
+    margin-bottom: 8px; 
+    color: #F4F7FB; 
+}
+.form-button{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    margin-top: 1rem !important;
+    border: 1px solid #B4C5D4 !important;
+    width: 100% !important;
+    color: #FCFAF9;
+    height: 3rem !important;
+    font-weight: 600 !important;
+    bottom: 20px !important;
+    margin-bottom: 2rem !important;
+}
+.form-button:hover{
+    background-color: #B4C5D4 !important;
+    box-shadow: 0 0 2px #B4C5D4,
+                    0 0 5px #B4C5D4,
+                    0 0 10px #B4C5D4,
+                    0 0 15px #B4C5D4 !important;
+    color: #03060e !important;
+}
+.header{
+    color:#FFB347 !important;
+}
+
+
+
+
+
+@media (max-width:768px) {
+    .card{
+        width: 100% !important;
+    }
+}

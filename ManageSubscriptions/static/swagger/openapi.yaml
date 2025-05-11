@@ -1,0 +1,1074 @@
+openapi: 3.0.3
+info:
+  title: Subly.io Subscription Management API
+  description: |
+    The Subly.io Subscription Management API enables client applications to manage their subscribers and subscription plans programmatically. Authenticated clients can retrieve, add, update, and delete subscriber records, while adhering to usage limits and tracking. This documentation covers all available endpoints, parameters, and data models necessary to work with the Subly.io subscriber API.
+  version: 1.0.0
+  contact:
+    email: support@subly.io
+
+servers:
+  - url: http://127.0.0.1:5000
+    description: Development server
+  - url: https://api.subly.io
+    description: Production server (HTTPS)
+
+components:
+  securitySchemes:
+    apiToken:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API token for client authentication
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Descriptive error message
+        status:
+          type: integer
+          description: HTTP status code
+      required:
+        - message
+        - status
+      example:
+        message: "API token is missing."
+        status: 400
+
+    Subscriber:
+      type: object
+      properties:
+        subscriber_id:
+          type: string
+          description: Unique identifier for the subscriber (client-specific user ID)
+        subscriber_plan:
+          type: string
+          description: Name of the subscription plan associated with this subscriber
+          nullable: true
+        start_date:
+          type: string
+          format: date
+          description: Subscription start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          description: Subscription end date (YYYY-MM-DD)
+        remaining_days:
+          type: integer
+          description: Number of days remaining in the subscription
+        is_active:
+          type: boolean
+          description: Indicates if the subscription is currently active
+        meta_data:
+          type: string
+          description: Additional subscriber metadata
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the subscriber was created
+      required:
+        - subscriber_id
+        - start_date
+        - end_date
+        - is_active
+      example:
+        subscriber_id: "user123"
+        subscriber_plan: "Premium"
+        start_date: "2025-01-01"
+        end_date: "2025-12-31"
+        remaining_days: 236
+        is_active: true
+        meta_data: "meta_data"
+        created_at: "2025-01-01 12:00:00"
+
+    SubscriberList:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Subscriber'
+      example:
+        "1":
+          subscriber_id: "user123"
+          subscriber_plan: "Premium"
+          start_date: "2025-01-01"
+          end_date: "2025-12-31"
+          remaining_days: 236
+          is_active: true
+          meta_data: "meta_data"
+        "2":
+          subscriber_id: "user456"
+          subscriber_plan: "Basic"
+          start_date: "2025-02-15"
+          end_date: "2025-08-15"
+          remaining_days: 97
+          is_active: true
+          meta_data: null
+          created_at: "2025-02-15 09:30:00"
+
+    SubscriberCreate:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: Unique identifier to assign to the new subscriber
+        plan_name:
+          type: string
+          description: Name of the subscription plan to assign
+        start_date:
+          type: string
+          format: date
+          description: Subscription start date (YYYY-MM-DD, defaults to current date if not provided)
+        end_date:
+          type: string
+          format: date
+          description: Subscription end date (YYYY-MM-DD, defaults to start_date + plan duration if not provided)
+        active:
+          type: boolean
+          description: Initial active status of the subscription
+        meta_data:
+          type: string
+          description: Optional metadata for the new subscriber
+          nullable: true
+      required:
+        - user_id
+        - plan_name
+        - active
+      example:
+        user_id: "user789"
+        plan_name: "Premium"
+        start_date: "2025-05-01"
+        end_date: "2026-04-30"
+        active: true
+        meta_data: "meta_data"
+
+    SubscriberUpdate:
+      type: object
+      properties:
+        plan_name:
+          type: string
+          description: (Optional) New subscription plan name
+        start_date:
+          type: string
+          format: date
+          description: (Optional) New subscription start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          description: (Optional) New subscription end date (YYYY-MM-DD)
+        active:
+          type: boolean
+          description: (Optional) New active status
+        meta_data:
+          type: string
+          description: (Optional) New metadata for the subscriber
+          nullable: true
+        remaining_days:
+          type: integer
+          description: (Optional) Number of days remaining in the subscription
+      example:
+        plan_name: "Premium Plus"
+        end_date: "2026-12-31"
+        active: false
+
+    Plan:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the plan
+        duration_days:
+          type: integer
+          description: Duration of the plan in days
+        description:
+          type: string
+          description: Description of the plan
+          nullable: true
+      required:
+        - name
+        - duration_days
+      example:
+        name: "Premium"
+        duration_days: 365
+        description: "Annual premium subscription with all features"
+
+    PlanList:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Plan'
+      example:
+        "1":
+          name: "Premium"
+          duration_days: 365
+          description: "Annual premium subscription with all features"
+        "2":
+          name: "Basic"
+          duration_days: 30
+          description: "Monthly basic subscription"
+
+    PlanCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name for the new plan
+        duration_days:
+          type: integer
+          description: Duration of the plan in days
+        description:
+          type: string
+          description: Optional description of the plan
+          nullable: true
+      required:
+        - name
+        - duration_days
+      example:
+        name: "Premium Plus"
+        duration_days: 365
+        description: "Enhanced annual subscription"
+
+    PlanUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: (Optional) New plan name
+        duration_days:
+          type: integer
+          description: (Optional) New duration in days
+        description:
+          type: string
+          description: (Optional) New plan description
+          nullable: true
+      example:
+        duration_days: 180
+        description: "Updated semi-annual plan"
+
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Success message
+        status:
+          type: integer
+          description: HTTP status code
+      required:
+        - message
+        - status
+      example:
+        message: "Subscriber is added successfully."
+        status: 200
+
+paths:
+  /api/subscribers:
+    get:
+      tags:
+        - Subscribers
+      summary: Get all subscribers
+      description: |
+        Retrieves a list of all subscribers for the authenticated client. Returns a numbered list of subscriber objects with their subscription details.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Successfully retrieved subscribers
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SubscriberList'
+                  - $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                subscribersFound:
+                  summary: Subscribers found
+                  value:
+                    "1":
+                      subscriber_id: "user123"
+                      subscriber_plan: "Premium"
+                      start_date: "2025-01-01"
+                      end_date: "2025-12-31"
+                      remaining_days: 236
+                      is_active: true
+                      meta_data: "meta_data"
+                    "2":
+                      subscriber_id: "user456"
+                      subscriber_plan: "Basic"
+                      start_date: "2025-02-15"
+                      end_date: "2025-08-15"
+                      remaining_days: 97
+                      is_active: true
+                      meta_data: null
+                      created_at: "2025-02-15 09:30:00"
+                noSubscribers:
+                  summary: No subscribers found
+                  value:
+                    message: "You have no subscribers."
+                    status: 200
+        '400':
+          description: Bad request or authentication error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+                requestFailed:
+                  summary: Request processing failed
+                  value:
+                    message: "Request was not processed."
+                    status: 400
+
+  /api/subscriber/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique subscriber ID (as assigned by the client)
+        example: "user123"
+    get:
+      tags:
+        - Subscribers
+      summary: Get a subscriber by ID
+      description: |
+        Retrieves details for a specific subscriber by their ID, including plan, dates, status, and metadata.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Subscriber details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscriber'
+              example:
+                subscriber_id: "user123"
+                subscriber_plan: "Premium"
+                start_date: "2025-01-01"
+                end_date: "2025-12-31"
+                remaining_days: 236
+                is_active: true
+                meta_data: "meta_data"
+                created_at: "2025-01-01 12:00:00"
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noSubscriber:
+                  summary: Subscriber not found
+                  value:
+                    message: "There is no subscriber associated with this id"
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+
+    patch:
+      tags:
+        - Subscribers
+      summary: Update a subscriber
+      description: |
+        Updates information for a specific subscriber by their ID. Clients can update the plan, start/end dates, active status, or metadata fields.
+      security:
+        - apiToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriberUpdate'
+            examples:
+              updatePlan:
+                summary: Update subscription plan
+                value:
+                  plan_name: "Premium Plus"
+              updateDates:
+                summary: Update subscription dates
+                value:
+                  start_date: "2025-06-01"
+                  end_date: "2026-05-31"
+              updateStatus:
+                summary: Update subscription status
+                value:
+                  active: false
+      responses:
+        '200':
+          description: Subscriber updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Data updated successfully."
+                status: 200
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noSubscriber:
+                  summary: Subscriber not found
+                  value:
+                    message: "There is no subscriber associated with this id"
+                    status: 400
+                invalidJson:
+                  summary: Invalid JSON data
+                  value:
+                    message: "Invalid or missing JSON data."
+                    status: 400
+                emptyJson:
+                  summary: Empty JSON data
+                  value:
+                    message: "Empty or malformed JSON."
+                    status: 400
+                invalidActive:
+                  summary: Invalid active value
+                  value:
+                    message: "active value should be boolean."
+                    status: 400
+                invalidPlan:
+                  summary: Invalid plan name
+                  value:
+                    message: "You have no plan called Enterprise."
+                    status: 400
+                invalidDate:
+                  summary: Invalid date format
+                  value:
+                    message: "Date must be in YYYY-MM-DD format."
+                    status: 400
+                noPatchData:
+                  summary: No data to update
+                  value:
+                    message: "No data was sent to patch."
+                    status: 400
+                nullField:
+                  summary: Field cannot be null
+                  value:
+                    message: "user_id can't be null."
+                    status: 400
+                invalidRemainingDays:
+                  summary: Invalid remaining days value
+                  value:
+                    message: "remaining_days should be an integer."
+                    status: 400
+
+    delete:
+      tags:
+        - Subscribers
+      summary: Delete a subscriber
+      description: |
+        Removes a specific subscriber by their ID. Permanently deletes the subscriber record from the system.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Subscriber deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Subscriber is deleted successfully."
+                status: 200
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noSubscriber:
+                  summary: Subscriber not found
+                  value:
+                    message: "There is no subscriber associated with this id"
+                    status: 400
+                deleteFailed:
+                  summary: Delete operation failed
+                  value:
+                    message: "Failed to delete subscriber."
+                    status: 400
+
+  /api/subscriber/{id}/renew:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique subscriber ID to renew
+        example: "user123"
+    get:
+      tags:
+        - Subscribers
+      summary: Renew a subscriber's subscription
+      description: |
+        Renews a specific subscriber's subscription. Sets active status to true, resets start date to current date, 
+        and calculates end date based on plan duration.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Subscription renewed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "subscription renewed successfully."
+                status: 200
+        '400':
+          description: Bad request or subscriber not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noSubscriber:
+                  summary: Subscriber not found
+                  value:
+                    message: "There is no subscriber associated with this id"
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+
+  /api/subscriber:
+    post:
+      tags:
+        - Subscribers
+      summary: Add a new subscriber
+      description: |
+        Creates a new subscriber with the specified details. Requires subscriber ID, plan name, and active status. 
+        Optional parameters include start/end dates and metadata.
+      security:
+        - apiToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriberCreate'
+            examples:
+              basicSubscriber:
+                summary: Basic subscriber without metadata
+                value:
+                  user_id: "user789"
+                  plan_name: "Basic"
+                  active: true
+              premiumSubscriber:
+                summary: Premium subscriber with dates and metadata
+                value:
+                  user_id: "user790"
+                  plan_name: "Premium"
+                  start_date: "2025-05-01"
+                  end_date: "2026-04-30"
+                  active: true
+                  meta_data: "meta_data"
+      responses:
+        '200':
+          description: Subscriber added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Subscriber is added successfully."
+                status: 200
+        '400':
+          description: Bad request (e.g. validation or missing data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                invalidJson:
+                  summary: Invalid JSON data
+                  value:
+                    message: "Invalid or missing JSON data."
+                    status: 400
+                emptyJson:
+                  summary: Empty JSON data
+                  value:
+                    message: "Empty or malformed JSON."
+                    status: 400
+                missingField:
+                  summary: Missing required field
+                  value:
+                    message: "user_id is missing."
+                    status: 400
+                invalidActive:
+                  summary: Invalid active value
+                  value:
+                    message: "active value should be boolean."
+                    status: 400
+                invalidPlan:
+                  summary: Invalid plan name
+                  value:
+                    message: "You have no plan called Enterprise."
+                    status: 400
+                invalidDate:
+                  summary: Invalid date format
+                  value:
+                    message: "Date must be in YYYY-MM-DD format."
+                    status: 400
+                duplicateSubscriber:
+                  summary: Subscriber already exists
+                  value:
+                    message: "Subscriber with this id already exists"
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+                subscriberLimitExceeded:
+                  summary: Subscriber limit exceeded
+                  value:
+                    message: "You exceeded your number of subscribers limit, upgrade your plan to add more subscribers."
+                    status: 400
+                missingStartDate:
+                  summary: Missing start date
+                  value:
+                    message: "specify a start_date before specifying an end_date."
+                    status: 400
+                nullField:
+                  summary: Field cannot be null
+                  value:
+                    message: "user_id can't be null."
+                    status: 400
+
+  /api/plans:
+    get:
+      tags:
+        - Plans
+      summary: Get all plans
+      description: |
+        Retrieves a list of all subscription plans for the authenticated client. Returns a numbered list of plan objects with their details.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Successfully retrieved plans
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PlanList'
+                  - $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                plansFound:
+                  summary: Plans found
+                  value:
+                    "1":
+                      name: "Premium"
+                      duration_days: 365
+                      description: "Annual premium subscription with all features"
+                    "2":
+                      name: "Basic"
+                      duration_days: 30
+                      description: "Monthly basic subscription"
+                noPlans:
+                  summary: No plans found
+                  value:
+                    message: "You have no plans."
+                    status: 200
+        '400':
+          description: Bad request or authentication error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+                requestFailed:
+                  summary: Request processing failed
+                  value:
+                    message: "Request was not processed."
+                    status: 400
+
+  /api/plan/{name}:
+    parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Unique plan name
+        example: "Premium"
+    get:
+      tags:
+        - Plans
+      summary: Get a plan by name
+      description: |
+        Retrieves details for a specific plan by its name, including duration and description.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Plan details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+              example:
+                name: "Premium"
+                duration_days: 365
+                description: "Annual premium subscription with all features"
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noPlan:
+                  summary: Plan not found
+                  value:
+                    message: "You have no plan associated with this name."
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+
+    patch:
+      tags:
+        - Plans
+      summary: Update a plan
+      description: |
+        Updates information for a specific plan by its name. Clients can update the name, duration, or description.
+      security:
+        - apiToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanUpdate'
+            examples:
+              updateName:
+                summary: Update plan name
+                value:
+                  name: "Premium Plus"
+              updateDuration:
+                summary: Update plan duration
+                value:
+                  duration_days: 180
+              updateDescription:
+                summary: Update plan description
+                value:
+                  description: "Updated premium plan description"
+      responses:
+        '200':
+          description: Plan updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Data updated successfully."
+                status: 200
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noPlan:
+                  summary: Plan not found
+                  value:
+                    message: "You have no plan associated with this name."
+                    status: 400
+                invalidJson:
+                  summary: Invalid JSON data
+                  value:
+                    message: "Invalid or missing JSON data."
+                    status: 400
+                emptyJson:
+                  summary: Empty JSON data
+                  value:
+                    message: "Empty or malformed JSON."
+                    status: 400
+                duplicatePlan:
+                  summary: Plan name already exists
+                  value:
+                    message: "You already have a plan called Premium Plus."
+                    status: 400
+                invalidDuration:
+                  summary: Invalid duration value
+                  value:
+                    message: "duration days should be an integer."
+                    status: 400
+                noPatchData:
+                  summary: No data to update
+                  value:
+                    message: "No data was sent to patch."
+                    status: 400
+                nullName:
+                  summary: Name cannot be null
+                  value:
+                    message: "name can't be null."
+                    status: 400
+
+    delete:
+      tags:
+        - Plans
+      summary: Delete a plan
+      description: |
+        Removes a specific plan by its name. Permanently deletes the plan record from the system.
+      security:
+        - apiToken: []
+      responses:
+        '200':
+          description: Plan deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Plan is deleted successfully."
+                status: 200
+        '400':
+          description: Bad request or not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                noPlan:
+                  summary: Plan not found
+                  value:
+                    message: "You have no plan associated with this name."
+                    status: 400
+                deleteFailed:
+                  summary: Delete operation failed
+                  value:
+                    message: "Failed to delete plan."
+                    status: 400
+
+  /api/plan:
+    post:
+      tags:
+        - Plans
+      summary: Add a new plan
+      description: |
+        Creates a new subscription plan with the specified details. Requires plan name and duration in days. Optional description can also be provided.
+      security:
+        - apiToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanCreate'
+            examples:
+              basicPlan:
+                summary: Basic plan
+                value:
+                  name: "Basic"
+                  duration_days: 30
+              premiumPlan:
+                summary: Premium plan with description
+                value:
+                  name: "Premium Plus"
+                  duration_days: 365
+                  description: "Enhanced annual subscription with premium features"
+      responses:
+        '200':
+          description: Plan added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              example:
+                message: "Plan is added successfully."
+                status: 200
+        '400':
+          description: Bad request (e.g. validation or missing data)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingToken:
+                  summary: API token is missing
+                  value:
+                    message: "API token is missing."
+                    status: 400
+                invalidToken:
+                  summary: Invalid API token
+                  value:
+                    message: "Ivalid API token."
+                    status: 400
+                invalidJson:
+                  summary: Invalid JSON data
+                  value:
+                    message: "Invalid or missing JSON data."
+                    status: 400
+                emptyJson:
+                  summary: Empty JSON data
+                  value:
+                    message: "Empty or malformed JSON."
+                    status: 400
+                missingField:
+                  summary: Missing required field
+                  value:
+                    message: "name is missing."
+                    status: 400
+                invalidDuration:
+                  summary: Invalid duration value
+                  value:
+                    message: "duration days should be an integer."
+                    status: 400
+                duplicatePlan:
+                  summary: Plan already exists
+                  value:
+                    message: "Plan already exists"
+                    status: 400
+                limitExceeded:
+                  summary: API request limit exceeded
+                  value:
+                    message: "You exceeded your limit, upgrade your plan to access API."
+                    status: 400
+                planLimitExceeded:
+                  summary: Plan limit exceeded
+                  value:
+                    message: "You exceeded your number of plans limit, upgrade your plan to add more plans."
+                    status: 400
+                nullField:
+                  summary: Field cannot be null
+                  value:
+                    message: "name can't be null."
+                    status: 400
+
+security:
+  - apiToken: []
+
+tags:
+  - name: Subscribers
+    description: Operations related to subscriber management
+  - name: Plans
+    description: Operations related to plan management

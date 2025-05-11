@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Subly API Docs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='swagger/swagger-ui.css') }}">
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="{{ url_for('static', filename='swagger/swagger-ui-bundle.js') }}"></script>
+    <script>
+      window.onload = () => {
+        SwaggerUIBundle({
+          url: "{{ url_for('static', filename='swagger/openapi.yaml') }}",
+          dom_id: '#swagger-ui',
+        });
+      };
+    </script>
+  </body>
+</html>
