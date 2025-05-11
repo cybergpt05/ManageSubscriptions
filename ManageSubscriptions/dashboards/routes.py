@@ -375,7 +375,7 @@ def add_plan():
         plan = ClientPlan(client_id=current_user.id,name=name,duration_days=duration_days,description=description)
         db.session.add(plan)
         db.session.commit()
-        flash(f'Plan was added successfully.', 'success')
+        flash('Plan was added successfully.', 'success')
         return redirect(url_for('dashboards.add_plan'))
 
     return render_template('add_plan.html', title='Subly - Add Plan', form=form)
