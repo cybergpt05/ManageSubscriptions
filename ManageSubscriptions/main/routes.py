@@ -15,7 +15,6 @@ def index():
 @main_bp.route('/pricing', methods=["GET","POST"])
 @limiter.limit("5 per 10 minutes", methods=["POST"])
 def pricing():
-    db.create_all()
     if request.method == "POST":
         try:
             plan = request.form.get('plan')
