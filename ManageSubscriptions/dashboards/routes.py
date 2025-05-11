@@ -139,6 +139,22 @@ def subscribers():
 @login_required
 def delete_user(id):
     client_id = current_user.id
+    try:
+        current_user.requests+=1
+        api_log = APIUsageTrack.query.filter_by(client_id=current_user.id,usage_date=datetime.now().date()).first()
+        if api_log:
+            api_log.usage_quantity+=1
+        else:
+            api_log = APIUsageTrack(client_id=current_user.id,usage_date=datetime.now().date(),usage_quantity=1)
+            db.session.add(api_log)
+    except:
+        flash("Request was not processed.","error")
+        return redirect(url_for('dashboards.subscribers'))
+    requests = current_user.requests
+    allowed_requests = current_user.allowed_requests
+    if allowed_requests - requests <= 0:
+        flash("You exceeded your limit, upgrade your plan to access API.","error")
+        return redirect(url_for('dashboards.subscribers'))
     is_subscriber_exists = ClientSubscriber.query.filter_by(client_id=client_id,user_id=id).first()
     if is_subscriber_exists:
         db.session.delete(is_subscriber_exists)
@@ -159,6 +175,7 @@ def add_subscriber():
         start_date = form.start_date.data
         end_date = form.end_date.data
         active = form.active.data
+        plan_duration_days = 0
         meta_data = form.meta_data.data
         try:
             plan_id = plan_id.split()[0]
@@ -182,16 +199,86 @@ def add_subscriber():
             del data_to_post['start_date']
         if data_to_post['end_date'] == '':
             del data_to_post['end_date']
-        print(data_to_post)
-        url = url_for('api.api_add_subscriber', _external=True)
-        response = requests.post(url, headers={'X-API-KEY':current_user.api_token,'Content-Type':'application/json'}, json=data_to_post)
-        if response.status_code == 200:
-            flash(f'Subscriber was added successfully.', 'success')
+        try:
+            current_user.requests+=1
+            api_log = APIUsageTrack.query.filter_by(client_id=current_user.id,usage_date=datetime.now().date()).first()
+            if api_log:
+                api_log.usage_quantity+=1
+            else:
+                api_log = APIUsageTrack(client_id=current_user.id,usage_date=datetime.now().date(),usage_quantity=1)
+                db.session.add(api_log)
+        except:
+            flash("Request was not processed.","error")
             return redirect(url_for('dashboards.add_subscriber'))
-        else:
-            error_msg = response.json()["message"]
-            flash(error_msg, 'error')
+        requests = current_user.requests
+        allowed_requests = current_user.allowed_requests
+        if allowed_requests - requests <= 0:
+            flash("You exceeded your limit, upgrade your plan to access API.","error")
             return redirect(url_for('dashboards.add_subscriber'))
+        if len(current_user.subscribers) >= current_user.subscribers_limit:
+            flash("You exceeded your number of subscribers limit, upgrade your plan to add more subscribers.", "error")
+            return redirect(url_for('dashboards.add_subscriber'))
+        try:
+            name = plan_id
+            plan_id = ClientPlan.query.filter_by(name=name, client_id=current_user.id).first()
+            if plan_id:
+                data_to_post['plan_id'] = plan_id.id
+                plan_duration_days = plan_id.duration_days
+            else:
+                flash(f"You have no plan called {name}.","error")
+                return redirect(url_for('dashboards.add_subscriber'))
+        except:
+            pass
+        try:
+            start = data_to_post['start_date']
+            if not is_valid_date(start):
+                flash(f"Date must be in YYYY-MM-DD format.","error")
+                return redirect(url_for('dashboards.add_subscriber'))
+            data_to_post['start_date'] = datetime.strptime(start, "%Y-%m-%d").date()
+        except:
+            pass
+        try:
+            end = data_to_post['end_date']
+            if not is_valid_date(end):
+                flash(f"Date must be in YYYY-MM-DD format.","error")
+                return redirect(url_for('dashboards.add_subscriber'))
+            data_to_post['end_date'] = datetime.strptime(end, "%Y-%m-%d").date()
+        except:
+            pass
+        is_subscriber_exists = ClientSubscriber.query.filter_by(user_id=data_to_post['user_id'], client_id=current_user.id).first()
+        if is_subscriber_exists:
+            flash(f"Subscriber with this id already exists.","error")
+            return redirect(url_for('dashboards.add_subscriber'))
+        try:
+            end_date = data_to_post['end_date']
+            if end_date:
+                try:
+                    start_date = data_to_post['start_date']
+                except KeyError:
+                    flash(f"specify a start_date before specifying an end_date.","error")
+                    return redirect(url_for('dashboards.add_subscriber'))
+        except:
+            pass
+        try:
+            start_date = data_to_post['start_date']
+            if start_date:
+                try:
+                    end_date = data_to_post['end_date']
+                    data_to_post['remaining_days'] = int(str(end_date - start_date).split()[0])
+                except KeyError:
+                    data_to_post['end_date'] = start_date + timedelta(days=plan_duration_days)
+                    data_to_post['remaining_days'] = int(str(data_to_post['end_date'] - start_date).split()[0])
+        except KeyError:
+            data_to_post['start_date'] = datetime.now().date()
+            data_to_post['end_date'] = datetime.now().date() + timedelta(days=plan_duration_days)
+            data_to_post['remaining_days'] = plan_duration_days
+        if data_to_post['active'] == False:
+            data_to_post['remaining_days'] = 0
+        subscriber = ClientSubscriber(client_id=current_user.id,user_id=data_to_post['user_id'],plan_id=data_to_post['plan_id'],start_date=data_to_post['start_date'],end_date=data_to_post['end_date'],active=data_to_post['active'],remaining_days=data_to_post['remaining_days'],meta_data=data_to_post['meta_data'])
+        db.session.add(subscriber)
+        db.session.commit()
+        flash(f"Subscriber is added successfully.","success")
+        return redirect(url_for('dashboards.add_subscriber'))
 
     return render_template('add_subscriber.html', title='Subly - Add Subscriber', form=form)
 
@@ -210,6 +297,22 @@ def plans():
 @login_required
 def delete_plan(name):
     client_id = current_user.id
+    try:
+        current_user.requests+=1
+        api_log = APIUsageTrack.query.filter_by(client_id=current_user.id,usage_date=datetime.now().date()).first()
+        if api_log:
+            api_log.usage_quantity+=1
+        else:
+            api_log = APIUsageTrack(client_id=current_user.id,usage_date=datetime.now().date(),usage_quantity=1)
+            db.session.add(api_log)
+    except:
+        flash("Request was not processed.","error")
+        return redirect(url_for('dashboards.plans'))
+    requests = current_user.requests
+    allowed_requests = current_user.allowed_requests
+    if allowed_requests - requests <= 0:
+        flash("You exceeded your limit, upgrade your plan to access API.","error")
+        return redirect(url_for('dashboards.plans'))
     is_plan_exists = ClientPlan.query.filter_by(client_id=client_id,name=name).first()
     if is_plan_exists:
         has_subscribers = ClientSubscriber.query.filter_by(plan_id=is_plan_exists.id).all()
@@ -233,11 +336,33 @@ def add_plan():
         name = form.name.data
         duration_days = form.duration_days.data
         description = form.description.data
+        try:
+            current_user.requests+=1
+            api_log = APIUsageTrack.query.filter_by(client_id=current_user.id,usage_date=datetime.now().date()).first()
+            if api_log:
+                api_log.usage_quantity+=1
+            else:
+                api_log = APIUsageTrack(client_id=current_user.id,usage_date=datetime.now().date(),usage_quantity=1)
+                db.session.add(api_log)
+        except:
+            flash("Request was not processed.","error")
+            return redirect(url_for('dashboards.add_plan'))
+        requests = current_user.requests
+        allowed_requests = current_user.allowed_requests
+        if allowed_requests - requests <= 0:
+            flash("You exceeded your limit, upgrade your plan to access API.","error")
+            return redirect(url_for('dashboards.add_plan'))
+        if len(current_user.plans) >= current_user.plans_limit:
+            flash("You exceeded your number of plans limit, upgrade your plan to add more plans.", "error")
+            return redirect(url_for('dashboards.add_plan'))
         if not name:
             flash('Name cannot be null.', 'error')
             return redirect(url_for('dashboards.add_plan'))
         try:
             int(duration_days)
+            if int(duration_days) > 3650:
+                flash('duration days limit is 3650 day.','error')
+                return redirect(url_for('dashboards.add_plan'))
         except:
             flash('Duration days should be integer.', 'error')
             return redirect(url_for('dashboards.add_plan'))
@@ -247,15 +372,10 @@ def add_plan():
         if is_plan_exists:
             flash('This plan already exists.', 'error')
             return redirect(url_for('dashboards.add_plan'))
-        data_to_post = {"name":name,"duration_days":int(duration_days),"description":description}
-        url = url_for('api.api_add_plan', _external=True)
-        response = requests.post(url, headers={'X-API-KEY':current_user.api_token,'Content-Type':'application/json'}, json=data_to_post)
-        if response.status_code == 200:
-            flash(f'Plan was added successfully.', 'success')
-            return redirect(url_for('dashboards.add_plan'))
-        else:
-            error_msg = response.json()["message"]
-            flash(error_msg, 'error')
-            return redirect(url_for('dashboards.add_plan'))
+        plan = ClientPlan(client_id=current_user.id,name=name,duration_days=duration_days,description=description)
+        db.session.add(plan)
+        db.session.commit()
+        flash(f'Plan was added successfully.', 'success')
+        return redirect(url_for('dashboards.add_plan'))
 
     return render_template('add_plan.html', title='Subly - Add Plan', form=form)
