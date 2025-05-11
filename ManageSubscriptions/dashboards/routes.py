@@ -178,7 +178,7 @@ def add_subscriber():
         plan_duration_days = 0
         meta_data = form.meta_data.data
         try:
-            plan_id = plan_id.split()[0]
+            plan_id = plan_id.split('|')[0].strip()
         except:
             abort(403)
         is_sub_exists = ClientSubscriber.query.filter_by(client_id=current_user.id,user_id=user_id).first()
