@@ -226,6 +226,7 @@
     document.getElementById('editForm').addEventListener("submit", async function(event){
         event.preventDefault();
         saveChangesBtn.innerHTML = 'Saving changes...';
+        saveChangesBtn.disabled = true;
         const planName = document.getElementById('plan-default').value;
         var formData = {
             name:document.getElementById('plan-name').value,
@@ -266,6 +267,9 @@
                 location.reload();
             }
             else{
+                saveChangesBtn.innerHTML = 'Save changes';
+                saveChangesBtn.disabled = false;
+                const planName = document.getElementById('plan-default').value;
                 const errorMessage = document.createElement('div');
                 errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>${data.message}.`;
                 errorMessage.classList.add('message', 'error-message', 'failed-message');
@@ -284,7 +288,8 @@
             }
         }
         catch(error) {
-            console.error(error)
+            saveChangesBtn.innerHTML = 'Save changes';
+            saveChangesBtn.disabled = false;
             const errorMessage = document.createElement('div');
             errorMessage.innerHTML = `<i class="bi bi-info-circle">  </i>Something went wrong while trying to update plan data.`;
             errorMessage.classList.add('message', 'error-message', 'error-message');
