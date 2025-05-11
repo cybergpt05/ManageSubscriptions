@@ -1,7 +1,14 @@
+{%if current_user.is_authenticated%}
+{%extends "layout4.html"%}
+{%else%}
 {%extends "layout.html"%}
+{%endif%}
 {%block content%}
+{%if current_user.is_authenticated%}
+<div style="margin-top: 156px !important;"></div>
+{%endif%}
 <link rel="stylesheet" href="{{url_for('static',filename='home.css')}}" />
-<h1 class="hook text-center" data-aos="fade-up" data-aos-duration="800"><font class="colored-hook">Unlock</font> The Future<br>Of Management</h1>
+<h1 class="hook text-center mt-5" data-aos="fade-up" data-aos-duration="800"><font class="colored-hook">Unlock</font> The Future<br>Of Management</h1>
 <h3 class="description text-center" data-aos="fade-up" data-aos-duration="800">Manage Your Organization Subscriptions Easily<br><p class="pt-2">With This Advanced Managing System</p></h3>
 <div class="fluid-container buttons-container" >
     <a href="/support" class="go-btn text-center" data-aos="fade-up" data-aos-duration="800">Talk to an Expert</a>
